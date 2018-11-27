@@ -22,3 +22,8 @@ SelfCamp's first project, aimed at database practice with MySQL &amp; Python
   - TODO: add masking to sensitive data
   - TODO: unify this w/ Asana
     - decide what type of tasks to put in Asana, and what in the repo
+
+- IDEAS/SUGGESTIONS
+  - Add location name to location table
+  - Add new table (location-shelf-rack) which would add relationship between locations, shelves, racks
+  - Create check constraint to validate location-shelf-rack combinations
