@@ -4,18 +4,13 @@ import mysql.connector
 import requests
 import xml.etree.ElementTree as ET
 import datetime as dt
+from main import connection_handler
 
-def midrate_updater():
-    cnx = mysql.connector.connect(user='adamhosm_oliver', password='selfcamprules',
-                                  host='69.89.31.211',
-                                  database='adamhosm_pizza_db')
+@connection_handler
+def midrate_updater(cursor):
 
-    cursor = cnx.cursor()
-
-    cursor.execute("SELECT date_updated FROM mid_exchange_rate")
-    date_of_table = cursor.fetchall()
-
-    if date_of_table[0][0] == dt.date.today(): return None
+    cursor.execute("SELECT date_updated FROM mid_exchange_rate LIMIT 1")
+    if cursor.fetchall()[0][0] == dt.date.today(): return None
 
     response = requests.get("http://api.napiarfolyam.hu/?bank=mnb")
     root = ET.fromstring(response.text)
@@ -42,9 +37,6 @@ def midrate_updater():
 
     cursor.execute("SELECT * FROM access_levels;")
     result = cursor.fetchall()
+    print(result)
 
-
-    cnx.close()
-
-if __name__ == '__main__':
-    midrate_updater()
+"""
