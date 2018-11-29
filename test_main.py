@@ -1,3 +1,6 @@
+"""Database testing functionality with bells & whistles, completely separate from main app functionality"""
+
+
 import mysql.connector
 import connection_data
 import test_queries
