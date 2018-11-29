@@ -43,3 +43,7 @@ PRIMARY KEY (employee_id)
 populate = f"""\
 INSERT INTO test_employees (first_name, last_name, contact_id, location_id, status, department, role, salary_huf)
 VALUES {get_random_employees(1000)};"""
+
+select_by_salary = """\
+SELECT * FROM test_employees WHERE salary_huf > 850000;
+"""
