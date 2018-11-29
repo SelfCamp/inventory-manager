@@ -16,20 +16,20 @@ SelfCamp's first project, aimed at database practice with MySQL &amp; Python
 
 #### Setup
 - **Set environment variables for database access**
-  - localhost_host
-  - localhost_database
-  - localhost_user
-  - localhost_password
-  - bluehost_host
-  - bluehost_database
-  - bluehost_user
-  - bluehost_password
+  - local_host
+  - local_database
+  - local_user
+  - local_password
+  - remote_host
+  - remote_database
+  - remote_user
+  - remote_password
 - **Install dependencies**
   - mysql-connector-python-rf==2.2.2
 
 
 #### Running (planned functionality)
 - **Local or remote**
-  - for ease of testing, the app switches readily between using a local and a remote MySQL server
+  - for ease of testing, the app switches readily between using one 'local' and one 'remote' MySQL server
   - to switch: change `main()` argument `remote=False` to `remote=True`
 - *To be coutinued*
