@@ -4,6 +4,7 @@ import test_queries
 
 
 def get_connection(remote):
+    """Return `MySQL connection object`, connecting to one of two MySQL servers"""
     if remote:
         return mysql.connector.connect(**connection_data.REMOTE)
     else:
@@ -11,10 +12,14 @@ def get_connection(remote):
 
 
 def make_queries(queries, autocommit=False, remote=False, verbose=False):
-    """Execute one or more separate SQL queries in `queries` on one of two database servers
+    """Execute queries on one of two MySQL servers
 
-    `remote=False`: will run on server configured as `LOCAL`
-    `remote=True`: will run on server configured as `REMOTE`
+    Args
+        - `queries`: iterable with one or more separate SQL query strings
+
+    Kwargs
+        - `remote=True`: run on `REMOTE` server instead of `LOCAL`
+        - `verbose=True`: print success rate and connection info to console (errors are always printed)
     """
     connection = get_connection(remote)
     connection.autocommit = autocommit
