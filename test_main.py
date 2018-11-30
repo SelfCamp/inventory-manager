@@ -2,16 +2,16 @@
 
 
 import mysql.connector
-import connection_data
+import cnx
 import test_queries
 
 
 def get_connection(remote):
     """Return `MySQL connection object`, connecting to one of two MySQL servers"""
     if remote:
-        return mysql.connector.connect(**connection_data.REMOTE)
+        return mysql.connector.connect(**cnx.REMOTE)
     else:
-        return mysql.connector.connect(**connection_data.LOCAL)
+        return mysql.connector.connect(**cnx.LOCAL)
 
 
 def make_queries(queries, autocommit=False, remote=False, verbose=False):
