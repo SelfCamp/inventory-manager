@@ -1,0 +1,31 @@
+product_id;name;kind;unit
+1;tükörtojás;Materials;1
+2;trappista;Materials;1
+3;erdei gomba;Materials;1
+4;füstölt sajt;Materials;1
+5;fuszeres tejföl;Materials;1
+6;parmezán;Materials;1
+7;hagyma;Materials;1
+8;gomba;Materials;1
+9;csirkemell;Materials;1
+10;pármai;Materials;1
+11;oliva;Materials;1
+12;sajt;Materials;1
+13;rucola;Materials;1
+14;fokhagyma;Materials;1
+15;roquefort;Materials;1
+16;articsóka;Materials;1
+17;paradicsomos olaj;Materials;1
+18;pepperoni;Materials;1
+19;mozzarella;Materials;1
+20;sonka;Materials;1
+21;chilis olaj;Materials;1
+22;aszalt paradicsom;Materials;1
+23;kolbász;Materials;1
+24;szalámi;Materials;1
+25;bazsalikom;Materials;1
+26;rák;Materials;1
+27;paradicsom;Materials;1
+28;p.szósz;Materials;1
+29;kaliforniai paprika;Materials;1
+30;ananász;Materials;1

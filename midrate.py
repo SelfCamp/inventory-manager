@@ -3,12 +3,13 @@
 import requests
 import xml.etree.ElementTree as ET
 import datetime as dt
-from main import connection_handler
+import cnx
+import itertools
 
-@connection_handler
+@cnx.connection_handler
 def midrate_updater(cursor):
     """ Checks if midrate table is up to date. Updates table from napiarfolyam.hu if dates are in the past."""
-    if is_midrate_up_to_date() == False:
+    if is_midrate_up_to_date():
         print("Foreign currency mid-rates are up to date!")
         return None
 
@@ -16,8 +17,7 @@ def midrate_updater(cursor):
     root = ET.fromstring(response.text)
 
     currency_list = list(currency.text for currency in root.findall("./deviza/item/penznem"))
-    midrate_list = list(midrate.text for i, midrate in enumerate(root.findall("./deviza/item/kozep")) if i % 2 == 0)
-
+    midrate_list = list(midrate.text for midrate in root.findall("./deviza/item/kozep")[::2])
     currency_rate_list = list(zip(currency_list, midrate_list))
 
     cursor.execute("DELETE FROM mid_exchange_rate")
@@ -27,7 +27,7 @@ def midrate_updater(cursor):
                        "VALUES ('{}','{}','{}')".format(elem[0], dt.date.today(), elem[1]))
 
 
-@connection_handler
+@cnx.connection_handler
 def is_midrate_up_to_date(cursor):
     """Checks whether the dating in midrate table is today or not.
 
@@ -40,5 +40,22 @@ def is_midrate_up_to_date(cursor):
         return True
     return False
 
+@cnx.connection_handler
+def sql_table_import(cursor, file, database):
+    with open(file) as f:
+        headers_list = str(*itertools.islice(f, 1)).strip().split(";")
+        data_list = list(line.strip().split(";") for line in f)
+
+    for data in data_list:
+        sql_query = "INSERT INTO " + database + " ("
+        for header in headers_list:
+            sql_query += header + ", "
+        sql_query = sql_query[:-2] + ") VALUES ("
+        for value in data:
+            sql_query += value + ", "
+        sql_query =  sql_query[:-2] + ")"
+        cursor.execute(sql_query)
+
+
 if __name__ == '__main__':
-    midrate_updater()
+    sql_table_import("drafts\proportions_table.csv", "proportions")
