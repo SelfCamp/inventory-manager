@@ -15,7 +15,7 @@ REMOTE = {'host':     os.environ.get('remote_host'),
           'password': os.environ.get('remote_password')}
 
 
-def get_connection(remote=False):
+def get_connection(remote=True):
     """Return `MySQL connection object`, connecting to one of two MySQL servers
 
     Kwargs
