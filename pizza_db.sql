@@ -11,7 +11,7 @@ quantity        INT NOT NULL,                               -- product table has
 location_id     CHAR(6) NOT NULL,
 rack_no         INT NOT NULL,
 shelf_no        INT NOT NULL,
-expiration_date DATETIME NOT NULL,
+expiration_date DATE NOT NULL,
 po_id           INT NOT NULL,                               -- traces item back to order/supplier
 PRIMARY KEY (inventory_id)
 );
