@@ -18,24 +18,39 @@ def test_suite(cursor):
 def reset_database(cursor):
     print('→ This will reset database when the feature is implemented')
     input('Press [Enter] to return to MENU')
+    # TODO: implement query
+    #       - delete all table contents
+    #       - fill w/ values from CSV
 
 
 @cnx.connection_handler
 def get_inventory(cursor):
     print('→ This will check complete inventory when the feature is implemented')
     input('Press [Enter] to return to MENU')
+    # cursor.execute('SELECT * FROM inventory;') # TODO: JOIN, add products.name
+    # result = cursor.fetchall()
+    # # TODO: finish
 
 
 @cnx.connection_handler
-def get_stock_level_by_product_id(cursor):
+def get_stock_level_for_product_id(cursor):
     print('→ This will check stock level by product ID when the feature is implemented')
     input('Press [Enter] to return to MENU')
+    # requested_product_id = input('Please enter requested product ID: ')
+    # cursor.execute(f"""
+    #     SELECT products.product_id, products.name, products.unit, inventory.quantity,  FROM inventory
+    #     JOIN products ON inventory.product_id = products.product_id
+    #     WHERE products.product_id = {requested_product_id}
+    # """)
+    # result = cursor.fetchall()
+    # # TODO: finish
 
 
 @cnx.connection_handler
-def update_stock_level_by_inventory_id(cursor):
+def update_stock_level_for_inventory_id(cursor):
     print('→ This will update stock level by inventory ID when the feature is implemented')
     input('Press [Enter] to return to MENU')
+    # TODO: implement
 
 
 def quit_application():
@@ -47,8 +62,8 @@ def menu_handler():
     MENU = [
         ('0: Reset database', reset_database),
         ('1: Check complete inventory', get_inventory),
-        ('2: Check stock level by product ID', get_stock_level_by_product_id),
-        ('3: Update stock level by inventory ID', update_stock_level_by_inventory_id),
+        ('2: Check stock level by product ID', get_stock_level_for_product_id),
+        ('3: Update stock level by inventory ID', update_stock_level_for_inventory_id),
         ('4: Quit application', quit_application)
     ]
     print('\nMENU')
