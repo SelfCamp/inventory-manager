@@ -46,22 +46,25 @@ def sql_table_import(cursor, file, database):
         headers_list = str(*itertools.islice(f, 1)).strip().split(";")
         data_list = list(line.strip().split(";") for line in f)
 
+    sql_query = "INSERT INTO " + database + " ("
+    for header in headers_list:
+        sql_query += header + ", "
+    sql_query = sql_query[:-2] + ") VALUES "
+
     for data in data_list:
-        sql_query = "INSERT INTO " + database + " ("
-        for header in headers_list:
-            sql_query += header + ", "
-        sql_query = sql_query[:-2] + ") VALUES ("
+        sql_query += "("
         for value in data:
             if value.isnumeric():
                 sql_query += value + ", "
             else:
                 sql_query += "'" + value + "', "
-        sql_query =  sql_query[:-2] + ")"
-        cursor.execute(sql_query)
+        sql_query =  sql_query[:-2] + "), "
+    sql_query = sql_query[:-2]
+    cursor.execute(sql_query)
 
 
 if __name__ == '__main__':
-    sql_table_import(r"drafts\inventory_table.csv", "inventory")
+    sql_table_import(r"drafts\contacts_table.csv", "contacts")
 
 #TODO: inventory exp date: show only date, time is not needed
 #TODO: Fix phone number for contacts
