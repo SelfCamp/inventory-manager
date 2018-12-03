@@ -1,5 +1,6 @@
 import cnx
 import test_queries
+import midrate
 
 
 @cnx.connection_handler
@@ -16,11 +17,33 @@ def test_suite(cursor):
 
 @cnx.connection_handler
 def reset_database(cursor):
-    print('→ This will reset database when the feature is implemented')
-    input('Press [Enter] to return to MENU')
-    # TODO: implement query
-    #       - delete all table contents
-    #       - fill w/ values from CSV
+    database_dict = {"inventory": r"drafts\inventory_table.csv",
+                     "locations": r"drafts\locations_table.csv",
+                     "products": r"drafts\products_table.csv",
+                     "products_to_suppliers": r"drafts\products_to_suppliers_table.csv",
+                     "menu_items": r"drafts\menu_items_table.csv",
+                     "proportions": r"drafts\proportions_table.csv",
+                     "suppliers": r"drafts\suppliers_table.csv",
+                     "contacts": r"drafts\contacts_table.csv",
+                     "users": r"drafts\users_table.csv",
+                     "purchase_orders": r"drafts\purchase_orders_table.csv",
+                     "purchase_order_contents": r"drafts\purchase_order_contents_table.csv",
+                     "access_levels": r"drafts\access_levels_table.csv",
+                     "employees": r"drafts\employees_table.csv"
+                     }
+
+    print("Rebuilding database, please stand by...")
+
+    sql_statement = "DROP TABLE mid_exchange_rate;"
+    for table in database_dict.keys():
+        sql_statement += f"DROP TABLE {table};"
+    with open("pizza_db.sql") as f:
+        sql_statement += f.read()
+    cursor.execute(sql_statement)
+    for database, file in database_dict.items():
+        midrate.sql_table_import(file,database)
+
+    #TODO: Dynamic table drop
 
 
 @cnx.connection_handler
