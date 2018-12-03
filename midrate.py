@@ -52,10 +52,32 @@ def sql_table_import(cursor, file, database):
             sql_query += header + ", "
         sql_query = sql_query[:-2] + ") VALUES ("
         for value in data:
-            sql_query += value + ", "
+            if value.isnumeric():
+                sql_query += value + ", "
+            else:
+                sql_query += "'" + value + "', "
         sql_query =  sql_query[:-2] + ")"
         cursor.execute(sql_query)
 
 
 if __name__ == '__main__':
-    sql_table_import("drafts\proportions_table.csv", "proportions")
+    sql_table_import(r"drafts\inventory_table.csv", "inventory")
+
+#TODO: inventory exp date: show only date, time is not needed
+#TODO: Fix phone number for contacts
+
+
+
+    # sql_table_import(r"drafts\access_levels_table.csv", "access_levels")
+    # sql_table_import(r"drafts\employees_table.csv", "employees")
+    # sql_table_import(r"drafts\locations_table.csv", "locations")
+    # sql_table_import(r"drafts\contacts_table.csv", "contacts")
+    # sql_table_import(r"drafts\users_table.csv", "users")
+    # sql_table_import(r"drafts\purchase_order_contents_table.csv", "purchase_order_contents")
+    # sql_table_import(r"drafts\purchase_orders_table.csv", "purchase_orders")
+    # sql_table_import(r"drafts\suppliers_table.csv", "suppliers")
+    # sql_table_import(r"drafts\products_to_suppliers_table.csv", "products_to_suppliers")
+    # sql_table_import(r"drafts\menu_items_table.csv", "menu_items")
+    # sql_table_import(r"drafts\products_table.csv", "products")
+    # sql_table_import(r"drafts\inventory_table.csv", "inventory")
+    # sql_table_import(r"drafts\proportions_table.csv", "proportions")
