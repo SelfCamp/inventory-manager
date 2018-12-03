@@ -26,7 +26,7 @@ PRIMARY KEY (location_id)
 
 
 CREATE TABLE products (                                     -- stuff we buy (e.g. ingredients, beverages)
-product_id      INT NOT NULL,
+product_id      INT NOT NULL AUTO INCREMENT
 name            VARCHAR(50) NOT NULL,
 kind            VARCHAR(20) NOT NULL,
 unit            VARCHAR(10) NOT NULL,                       -- 'grams' / 'pieces'
