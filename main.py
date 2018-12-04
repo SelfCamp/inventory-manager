@@ -22,6 +22,7 @@ def list_all_databases(cursor):
 
 @cnx.connection_handler
 def drop_tables(cursor):
+    """Deletes all active tables, returns none"""
     print("Dropping tables... Whoops!")
     tables = list_all_databases()
     sql_statement = ""
@@ -32,6 +33,7 @@ def drop_tables(cursor):
 
 @cnx.connection_handler
 def rebuild_tables(cursor):
+    """Rebuilds all tables from pizza_db.sql. Returns none."""
     print("Rebuilding tables")
     sql_statement = ""
     with open("pizza_db.sql") as f:
@@ -41,12 +43,14 @@ def rebuild_tables(cursor):
 
 @cnx.connection_handler
 def mass_import_data(cursor):
+    """This function adds data to tables based on .CSV files in /drafts. Returns none. """
     for database, file in static_data.database_dict.items():
         midrate.sql_table_import(file,database)
         print(f"Data added to table {database}")
 
 @cnx.connection_handler
 def reset_database(cursor):
+    """This function does a full database reset by dropping, rebuilding and importing data to tables."""
     drop_tables()
     rebuild_tables()
     mass_import_data()
