@@ -22,54 +22,35 @@ def list_all_databases(cursor):
 
 @cnx.connection_handler
 def drop_tables(cursor):
+    print("Dropping tables... Whoops!")
     tables = list_all_databases()
     sql_statement = ""
     for table in tables:
         sql_statement += f"DROP TABLE {table};"
     cursor.execute(sql_statement)
+    print("Tables successfully dropped.")
 
 @cnx.connection_handler
 def rebuild_tables(cursor):
+    print("Rebuilding tables")
     sql_statement = ""
     with open("pizza_db.sql") as f:
         sql_statement += f.read()
-    cursor.execute(sql_statement)
+    cursor.execute(sql_statement, multi=True)
+    print("Tables successfully rebuilt")
 
 @cnx.connection_handler
 def mass_import_data(cursor):
-    pass
+    for database, file in static_data.database_dict.items():
+        midrate.sql_table_import(file,database)
+        print(f"Data added to table {database}")
 
 @cnx.connection_handler
 def reset_database(cursor):
-    database_dict = {"inventory": r"drafts/inventory_table.csv",
-                     "locations": r"drafts/locations_table.csv",
-                     "products": r"drafts/products_table.csv",
-                     "products_to_suppliers": r"drafts/products_to_suppliers_table.csv",
-                     "menu_items": r"drafts/menu_items_table.csv",
-                     "proportions": r"drafts/proportions_table.csv",
-                     "suppliers": r"drafts/suppliers_table.csv",
-                     "contacts": r"drafts/contacts_table.csv",
-                     "users": r"drafts/users_table.csv",
-                     "purchase_orders": r"drafts/purchase_orders_table.csv",
-                     "purchase_order_contents": r"drafts/purchase_order_contents_table.csv",
-                     "access_levels": r"drafts/access_levels_table.csv",
-                     "employees": r"drafts/employees_table.csv"
-                     }
-
-    print("Dropping tables. Oops!)
-
-
-    sql_statement = "DROP TABLE mid_exchange_rate;"
-    for table in database_dict.keys():
-        sql_statement += f"DROP TABLE {table};"
-    with open("pizza_db.sql") as f:
-        sql_statement += f.read()
-    cursor.execute(sql_statement, multi=True)
-    for database, file in database_dict.items():
-        midrate.sql_table_import(file,database)
-
-    #TODO: Dynamic table drop
-
+    drop_tables()
+    rebuild_tables()
+    mass_import_data()
+    print("Reset finished!")
 
 
 @cnx.connection_handler
