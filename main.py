@@ -17,6 +17,11 @@ def test_suite(cursor):
 
 @cnx.connection_handler
 def list_all_databases(cursor):
+    """Function to list currently active databases.
+
+    Returns:
+        List of database names
+    """
     cursor.execute("SHOW TABLES")
     return list(table[0] for table in cursor.fetchall())
 
