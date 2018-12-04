@@ -12,3 +12,6 @@ database_dict = {"inventory": r"drafts/inventory_table.csv",
                  "access_levels": r"drafts/access_levels_table.csv",
                  "employees": r"drafts/employees_table.csv"
                  }
+
+currencies = ["AUD", "DKK", "JPY", "CAD", "NOK", "CHF", "SEK", "USD", "CZK", "PLN", "EUR",
+              "HRK", "RON", "TRY", "BGN", "RSD", "GBP"]
