@@ -128,6 +128,17 @@ def update_stock_level_for_inventory_id(cursor):
         print(f'\nUpdated quantity of \'{name}\' at {loc} on rack {rack}, shelf {shelf} (expires on {exp}): {qty} {unit}')
     input('Press [Enter] to return to MENU')
 
+@cnx.connection_handler
+def check_available_suppliers(cursor):
+    cursor.execute("""SELECT suppliers.supplier_id, suppliers.name, products.name AS "supplies", contacts.email, contacts.phone_no 
+                    FROM suppliers JOIN products_to_suppliers ON suppliers.supplier_id = products_to_suppliers.product_id 
+                    JOIN products ON products.product_id = products_to_suppliers.product_id 
+                    JOIN contacts ON contacts.contact_id = suppliers.contact_id""")
+    records = list(dict(zip(cursor.column_names, fetch)) for fetch in cursor.fetchall())
+    for record in records:
+        print(record)
+
+    #TODO: Pretty printing
 
 def quit_application():
     print('\nGoodbye!\n')
@@ -140,6 +151,7 @@ def menu_handler():
         ('1: Check complete inventory', get_inventory),
         ('2: Check stock level by product ID', get_stock_level_for_product_id),
         ('3: Update stock level by inventory ID', update_stock_level_for_inventory_id),
+        ('4: Request supplier information', check_available_suppliers),
         ('4: Quit application', quit_application)
     ]
     print('\nMENU')
