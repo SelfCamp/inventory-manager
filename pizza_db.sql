@@ -1,9 +1,3 @@
-CREATE DATABASE pizza_db;
-
-
-USE pizza_db;
-
-
 CREATE TABLE inventory (
 inventory_id    INT NOT NULL AUTO_INCREMENT,
 product_id      INT NOT NULL,
@@ -26,7 +20,7 @@ PRIMARY KEY (location_id)
 
 
 CREATE TABLE products (                                     -- stuff we buy (e.g. ingredients, beverages)
-product_id      INT NOT NULL AUTO INCREMENT
+product_id      INT NOT NULL AUTO_INCREMENT,
 name            VARCHAR(50) NOT NULL,
 kind            VARCHAR(20) NOT NULL,
 unit            VARCHAR(10) NOT NULL,                       -- 'grams' / 'pieces'
