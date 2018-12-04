@@ -1,10 +1,12 @@
 # Az árfolyamokat a napiárfolyam.hu gyüjti
 
+import static_data
 import requests
 import xml.etree.ElementTree as ET
 import datetime as dt
 import cnx
 import itertools
+import unittest
 
 @cnx.connection_handler
 def midrate_updater(cursor):
@@ -64,24 +66,34 @@ def sql_table_import(cursor, file, database):
     cursor.execute(sql_query)
 
 
+@cnx.connection_handler
+def fetch_table(cursor, database):
+    cursor.execute(f"SELECT * FROM {database}")
+    return cursor.fetchall()
+
+
+class TestMidrate(unittest.TestCase):
+
+    def setUp(self):
+        #midrate_updater()
+        self._midrate_table = fetch_table("mid_exchange_rate")
+
+    def test_number_of_records(self):
+        self.assertEqual(len(self._midrate_table), 17, "Testing the number of expected records...")
+
+    def test_up_to_date(self):
+        self.assertTrue(all(date[1] == dt.date.today() for date in self._midrate_table),
+                        "Testing if all records are up to date")
+
+    def test_currency_id_length(self):
+        currency_id_length = set(len(currency[0]) for currency in self._midrate_table)
+        self.assertEqual(currency_id_length, {3, }, "Testing if currency length is 3")
+
+    def test_currency_id_contents(self):
+        self.assertEqual(set(element[0] for element in self._midrate_table),
+                         set(static_data.currencies),
+                         "Testing if required currencies are present")
+
 if __name__ == '__main__':
-    midrate_updater()
+    unittest.main()
 
-#TODO: inventory exp date: show only date, time is not needed
-#TODO: Fix phone number for contacts
-
-
-
-    # sql_table_import(r"drafts\access_levels_table.csv", "access_levels")
-    # sql_table_import(r"drafts\employees_table.csv", "employees")
-    # sql_table_import(r"drafts\locations_table.csv", "locations")
-    # sql_table_import(r"drafts\contacts_table.csv", "contacts")
-    # sql_table_import(r"drafts\users_table.csv", "users")
-    # sql_table_import(r"drafts\purchase_order_contents_table.csv", "purchase_order_contents")
-    # sql_table_import(r"drafts\purchase_orders_table.csv", "purchase_orders")
-    # sql_table_import(r"drafts\suppliers_table.csv", "suppliers")
-    # sql_table_import(r"drafts\products_to_suppliers_table.csv", "products_to_suppliers")
-    # sql_table_import(r"drafts\menu_items_table.csv", "menu_items")
-    # sql_table_import(r"drafts\products_table.csv", "products")
-    # sql_table_import(r"drafts\inventory_table.csv", "inventory")
-    # sql_table_import(r"drafts\proportions_table.csv", "proportions")
