@@ -18,19 +18,19 @@ def test_suite(cursor):
 
 @cnx.connection_handler
 def reset_database(cursor):
-    database_dict = {"inventory": r"drafts\inventory_table.csv",
-                     "locations": r"drafts\locations_table.csv",
-                     "products": r"drafts\products_table.csv",
-                     "products_to_suppliers": r"drafts\products_to_suppliers_table.csv",
-                     "menu_items": r"drafts\menu_items_table.csv",
-                     "proportions": r"drafts\proportions_table.csv",
-                     "suppliers": r"drafts\suppliers_table.csv",
-                     "contacts": r"drafts\contacts_table.csv",
-                     "users": r"drafts\users_table.csv",
-                     "purchase_orders": r"drafts\purchase_orders_table.csv",
-                     "purchase_order_contents": r"drafts\purchase_order_contents_table.csv",
-                     "access_levels": r"drafts\access_levels_table.csv",
-                     "employees": r"drafts\employees_table.csv"
+    database_dict = {"inventory": r"drafts/inventory_table.csv",
+                     "locations": r"drafts/locations_table.csv",
+                     "products": r"drafts/products_table.csv",
+                     "products_to_suppliers": r"drafts/products_to_suppliers_table.csv",
+                     "menu_items": r"drafts/menu_items_table.csv",
+                     "proportions": r"drafts/proportions_table.csv",
+                     "suppliers": r"drafts/suppliers_table.csv",
+                     "contacts": r"drafts/contacts_table.csv",
+                     "users": r"drafts/users_table.csv",
+                     "purchase_orders": r"drafts/purchase_orders_table.csv",
+                     "purchase_order_contents": r"drafts/purchase_order_contents_table.csv",
+                     "access_levels": r"drafts/access_levels_table.csv",
+                     "employees": r"drafts/employees_table.csv"
                      }
 
     print("Rebuilding database, please stand by...")
@@ -40,7 +40,7 @@ def reset_database(cursor):
         sql_statement += f"DROP TABLE {table};"
     with open("pizza_db.sql") as f:
         sql_statement += f.read()
-    cursor.execute(sql_statement)
+    cursor.execute(sql_statement, multi=True)
     for database, file in database_dict.items():
         midrate.sql_table_import(file,database)
 
@@ -67,14 +67,14 @@ def get_inventory(cursor):
 @cnx.connection_handler
 def get_stock_level_for_product_id(cursor):
     """Print stock level for a given product ID from user input"""
-    product_id = input('Please enter product ID: ')
+    product_id = input('\nPlease enter product ID: ')
     cursor.execute(f"""
         SELECT inv.location_id, inv.quantity, inv.expiration_date, inv.rack_no, inv.shelf_no,
                prod.name, prod.unit
         FROM inventory inv JOIN products prod
         ON inv.product_id = prod.product_id
         WHERE prod.product_id = {product_id}
-        ORDER BY inv.location_id, inv.expiration_date;;
+        ORDER BY inv.location_id, inv.expiration_date;
     """)
     result = cursor.fetchall()
     name = result[0][5]
@@ -87,7 +87,7 @@ def get_stock_level_for_product_id(cursor):
 @cnx.connection_handler
 def update_stock_level_for_inventory_id(cursor):
     """Update stock level for a given inventory ID from user input"""
-    inventory_id = input('Please enter inventory ID: ')
+    inventory_id = input('\nPlease enter inventory ID: ')
     cursor.execute(f"""
         SELECT inv.location_id, inv.quantity, inv.expiration_date, inv.rack_no, inv.shelf_no,
                prod.name, prod.unit
