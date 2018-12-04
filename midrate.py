@@ -11,11 +11,11 @@ import unittest
 @cnx.connection_handler
 def midrate_updater(cursor):
     """ Checks if midrate table is up to date. Updates table from napiarfolyam.hu if dates are in the past."""
-    """
+
     if is_midrate_up_to_date():
         print("Foreign currency mid-rates are up to date!")
         return None
-"""
+
     response = requests.get("http://api.napiarfolyam.hu/?bank=mnb")
     root = ET.fromstring(response.text)
 
@@ -26,7 +26,7 @@ def midrate_updater(cursor):
     cursor.execute("DELETE FROM mid_exchange_rate")
     to_sql = "INSERT INTO mid_exchange_rate (currency_id, date_updated, midrate_to_huf) VALUES "
     for elem in currency_rate_list:
-        to_sql += " ('{}','{}','{}'),".format(elem[0], dt.date.today(), elem[1])
+        to_sql += f" ('{elem[0]}','{dt.date.today()}','{elem[1]}'),"
     to_sql = to_sql[:-1]
     cursor.execute(to_sql)
 
