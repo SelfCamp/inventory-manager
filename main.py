@@ -2,7 +2,7 @@ import cnx
 import midrate
 import test_queries
 import ui
-
+import static_data
 
 @cnx.connection_handler
 def test_suite(cursor):
@@ -15,6 +15,29 @@ def test_suite(cursor):
     for employee_id, first_name, last_name, contact_id, location_id, status, department, role, salary_huf in top_earners:
         print(f'- {first_name} {last_name} ({role} in {department}) earns {salary_huf} HUF')
 
+@cnx.connection_handler
+def list_all_databases(cursor):
+    cursor.execute("SHOW TABLES")
+    return list(table[0] for table in cursor.fetchall())
+
+@cnx.connection_handler
+def drop_tables(cursor):
+    tables = list_all_databases()
+    sql_statement = ""
+    for table in tables:
+        sql_statement += f"DROP TABLE {table};"
+    cursor.execute(sql_statement)
+
+@cnx.connection_handler
+def rebuild_tables(cursor):
+    sql_statement = ""
+    with open("pizza_db.sql") as f:
+        sql_statement += f.read()
+    cursor.execute(sql_statement)
+
+@cnx.connection_handler
+def mass_import_data(cursor):
+    pass
 
 @cnx.connection_handler
 def reset_database(cursor):
@@ -33,7 +56,8 @@ def reset_database(cursor):
                      "employees": r"drafts/employees_table.csv"
                      }
 
-    print("Rebuilding database, please stand by...")
+    print("Dropping tables. Oops!)
+
 
     sql_statement = "DROP TABLE mid_exchange_rate;"
     for table in database_dict.keys():
@@ -45,6 +69,7 @@ def reset_database(cursor):
         midrate.sql_table_import(file,database)
 
     #TODO: Dynamic table drop
+
 
 
 @cnx.connection_handler
