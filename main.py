@@ -41,20 +41,18 @@ def rebuild_tables(cursor):
     cursor.execute(sql_statement, multi=True)
     print("Tables successfully rebuilt")
 
-@cnx.connection_handler
-def mass_import_data(cursor):
+def mass_import_data():
     """This function adds data to tables based on .CSV files in /drafts. Returns none. """
     for database, file in static_data.database_dict.items():
         midrate.sql_table_import(file,database)
         print(f"Data added to table {database}")
 
-@cnx.connection_handler
-def reset_database(cursor):
+def reset_database():
     """This function does a full database reset by dropping, rebuilding and importing data to tables."""
     drop_tables()
     rebuild_tables()
     mass_import_data()
-    print("Reset finished!")
+    print("\nReset finished!")
 
 
 @cnx.connection_handler
