@@ -13,6 +13,7 @@ PRIMARY KEY (inventory_id)
 
 CREATE TABLE locations (
 location_id     CHAR(6) NOT NULL,                           -- 3-letter city name + 3-letter sequence no. (e.g. 'BUD001')
+location_name   VARCHAR(20) NOT NULL,
 manager_id      INT NOT NULL,
 contact_id      INT NOT NULL,
 PRIMARY KEY (location_id)

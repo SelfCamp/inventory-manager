@@ -1,6 +1,6 @@
-location_id;manager_id;contact_id
-BUD001;4;6091
-BUD002;9;1687
-BUD003;11;3080
-BUD004;25;5718
-BUD005;31;4170
+location_id;location_name;manager_id;contact_id
+BUD001;Central storage;4;6091
+BUD002;Storage B;9;1687
+BUD003;Backoffice;11;3080
+BUD004;Kitchen;25;5718
+BUD005;Restaurant;31;4170
