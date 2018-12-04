@@ -39,9 +39,12 @@ def is_midrate_up_to_date(cursor):
         False: If the date in the midrate table is YESTERDAY
     """
     cursor.execute("SELECT date_updated FROM mid_exchange_rate LIMIT 1")
-    if cursor.fetchall()[0][0] == dt.date.today():
-        return True
-    return False
+    try:
+        if cursor.fetchall()[0][0] == dt.date.today():
+            return True
+        return False
+    except IndexError:
+        return False
 
 @cnx.connection_handler
 def sql_table_import(cursor, file, database):
@@ -71,11 +74,14 @@ def fetch_table(cursor, database):
     cursor.execute(f"SELECT * FROM {database}")
     return cursor.fetchall()
 
+@cnx.connection_handler
+def sql_execute(cursor, statement):
+    cursor.execute(statement)
+
 
 class TestMidrate(unittest.TestCase):
-
     def setUp(self):
-        #midrate_updater()
+        midrate_updater()
         self._midrate_table = fetch_table("mid_exchange_rate")
 
     def test_number_of_records(self):
@@ -94,6 +100,23 @@ class TestMidrate(unittest.TestCase):
                          set(static_data.currencies),
                          "Testing if required currencies are present")
 
+class TestSQLTableImport(unittest.TestCase):
+    def setUp(self):
+        sql_execute("CREATE TABLE unittest (supplier_id INT NOT NULL AUTO_INCREMENT, "
+                    "name VARCHAR(50) NOT NULL, contact_id INT NOT NULL, PRIMARY KEY (supplier_id));")
+        sql_table_import("drafts/unittest_table.csv","unittest")
+        with open("drafts/unittest_table.csv") as f:
+            self._file = list(line.strip().split(";") for line in f)[1:]
+        self._sql = fetch_table("unittest")
+        self._trials = []
+        for sql, file in zip(self._sql, self._file):
+            self._trials.extend(list(str(subsql) == str(subfile) for subsql, subfile in zip(sql, file)))
+
+    def test_import(self):
+        self.assertTrue(all(self._trials),"Testing if data is correctly added to table")
+
+    def tearDown(self):
+        sql_execute("DROP TABLE unittest")
+
 if __name__ == '__main__':
     unittest.main()
-
