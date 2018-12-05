@@ -1,31 +1,31 @@
 product_id;name;kind;unit
-1;tükörtojás;Materials;pieces
+1;tÃ¼kÃ¶rtojÃ¡s;Materials;pieces
 2;trappista;Materials;grams
 3;erdei gomba;Materials;pieces
-4;füstölt sajt;Materials;grams
-5;fuszeres tejföl;Materials;grams
-6;parmezán;Materials;grams
+4;fÃ¼stÃ¶lt sajt;Materials;grams
+5;fuszeres tejfÃ¶l;Materials;grams
+6;parmezÃ¡n;Materials;grams
 7;hagyma;Materials;pieces
 8;gomba;Materials;pieces
 9;csirkemell;Materials;pieces
-10;pármai;Materials;pieces
+10;pÃ¡rmai;Materials;pieces
 11;oliva;Materials;pieces
 12;sajt;Materials;grams
 13;rucola;Materials;grams
 14;fokhagyma;Materials;pieces
 15;roquefort;Materials;grams
-16;articsóka;Materials;pieces
+16;articsÃ³ka;Materials;pieces
 17;paradicsomos olaj;Materials;grams
 18;pepperoni;Materials;grams
 19;mozzarella;Materials;grams
 20;sonka;Materials;pieces
 21;chilis olaj;Materials;grams
 22;aszalt paradicsom;Materials;pieces
-23;kolbász;Materials;pieces
-24;szalámi;Materials;pieces
+23;kolbÃ¡sz;Materials;pieces
+24;szalÃ¡mi;Materials;pieces
 25;bazsalikom;Materials;grams
-26;rák;Materials;pieces
+26;rÃ¡k;Materials;pieces
 27;paradicsom;Materials;pieces
-28;p.szósz;Materials;grams
+28;p.szÃ³sz;Materials;grams
 29;kaliforniai paprika;Materials;pieces
-30;ananász;Materials;pieces
+30;ananÃ¡sz;Materials;pieces
