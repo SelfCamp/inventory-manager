@@ -30,10 +30,7 @@ def drop_tables(cursor):
     """Deletes all active tables, returns none"""
     print("Dropping tables... Whoops!")
     tables = list_all_databases()
-    sql_statement = ""
-    for table in tables:
-        sql_statement += f"DROP TABLE {table};"
-    cursor.execute(sql_statement)
+    cursor.execute("DROP TABLE locations;DROP TABLE contacts", multi=True)
     print("Tables successfully dropped.")
 
 @cnx.connection_handler
@@ -55,8 +52,8 @@ def mass_import_data():
 def reset_database():
     """This function does a full database reset by dropping, rebuilding and importing data to tables."""
     drop_tables()
-    rebuild_tables()
-    mass_import_data()
+    #rebuild_tables()
+    #mass_import_data()
     print("\nReset finished!")
 
 
@@ -152,7 +149,7 @@ def menu_handler():
         ('2: Check stock level by product ID', get_stock_level_for_product_id),
         ('3: Update stock level by inventory ID', update_stock_level_for_inventory_id),
         ('4: Request supplier information', check_available_suppliers),
-        ('4: Quit application', quit_application)
+        ('5: Quit application', quit_application)
     ]
     print('\nMENU')
     for description, fn in MENU:
