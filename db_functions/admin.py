@@ -26,10 +26,10 @@ def drop_tables(cursor):
 
 @cnx.connection_handler
 def rebuild_tables(cursor):
-    """Rebuild all tables from `/pizza_db.sql`, return `None`"""
+    """Rebuild all tables from `/schema.sql`, return `None`"""
     print("Rebuilding tables...", end='')
     sql_statement = ""
-    with open("pizza_db.sql") as f:
+    with open("queries/schema.sql") as f:
         sql_statement += f.read()
     try:
         cursor.execute(sql_statement)
