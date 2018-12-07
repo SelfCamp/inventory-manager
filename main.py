@@ -1,8 +1,9 @@
 import cnx
 import midrate
-import test_queries
-import ui
 import static_data
+import ui
+from deprecated import test_queries
+
 
 @cnx.connection_handler
 def test_suite(cursor):
@@ -15,19 +16,17 @@ def test_suite(cursor):
     for employee_id, first_name, last_name, contact_id, location_id, status, department, role, salary_huf in top_earners:
         print(f'- {first_name} {last_name} ({role} in {department}) earns {salary_huf} HUF')
 
+
 @cnx.connection_handler
 def list_all_databases(cursor):
-    """Function to list currently active databases.
-
-    Returns:
-        List of database names
-    """
+    """Return currently active databases as `list`"""
     cursor.execute("SHOW TABLES")
     return list(table[0] for table in cursor.fetchall())
 
+
 @cnx.connection_handler
 def drop_tables(cursor):
-    """Deletes all active tables, returns none"""
+    """Delete all active tables, return `None`"""
     print("Dropping tables...", end='')
     tables = list_all_databases()
     sql_statement = ""
@@ -42,7 +41,7 @@ def drop_tables(cursor):
 
 @cnx.connection_handler
 def rebuild_tables(cursor):
-    """Rebuilds all tables from pizza_db.sql. Returns none."""
+    """Rebuild all tables from `/pizza_db.sql`, return `None`"""
     print("Rebuilding tables...", end='')
     sql_statement = ""
     with open("pizza_db.sql") as f:
@@ -53,15 +52,17 @@ def rebuild_tables(cursor):
         pass
     print(" DONE")
 
+
 def mass_import_data():
-    """This function adds data to tables based on .CSV files in /drafts. Returns none. """
-    for table, file in static_data.database_dict.items():
+    """Add data to tables based on .CSV files in `/drafts`, return `None`"""
+    for table, file in static_data.STARTER_DATA_FILES.items():
         print(f'Importing to {table}...', end='')
-        midrate.sql_table_import(file,table)
+        midrate.sql_table_import(file, table)
         print(f" DONE")
 
+
 def reset_database():
-    """This function does a full database reset by dropping, rebuilding and importing data to tables."""
+    """Reset full database by dropping, rebuilding and importing data to tables"""
     drop_tables()
     rebuild_tables()
     mass_import_data()
@@ -138,6 +139,7 @@ def update_stock_level_for_inventory_id(cursor):
 
 @cnx.connection_handler
 def check_available_suppliers(cursor):
+    """Print list of suppliers with corresponding products and contact details, return `None`"""
     cursor.execute("""SELECT suppliers.supplier_id, suppliers.name, products.name AS "supplies", contacts.email, contacts.phone_no 
                     FROM suppliers JOIN products_to_suppliers ON suppliers.supplier_id = products_to_suppliers.product_id 
                     JOIN products ON products.product_id = products_to_suppliers.product_id 
@@ -145,8 +147,8 @@ def check_available_suppliers(cursor):
     records = list(dict(zip(cursor.column_names, fetch)) for fetch in cursor.fetchall())
     for record in records:
         print(record)
+    # TODO: Pretty printing
 
-    #TODO: Pretty printing
 
 def quit_application():
     print('\nGoodbye!\n')
@@ -160,7 +162,7 @@ def menu_handler():
         ('2: Check stock level by product ID', get_stock_level_for_product_id),
         ('3: Update stock level by inventory ID', update_stock_level_for_inventory_id),
         ('4: Request supplier information', check_available_suppliers),
-        ('4: Quit application', quit_application)
+        ('5: Quit application', quit_application)
     ]
     print('\nMENU')
     for description, fn in MENU:

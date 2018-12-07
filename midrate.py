@@ -1,16 +1,19 @@
 # Az árfolyamokat a napiárfolyam.hu gyüjti
 
-import static_data
-import requests
-import xml.etree.ElementTree as ET
 import datetime as dt
-import cnx
 import itertools
 import unittest
+import xml.etree.ElementTree as ET
+
+import requests
+
+import cnx
+import static_data
+
 
 @cnx.connection_handler
 def midrate_updater(cursor):
-    """ Checks if midrate table is up to date. Updates table from napiarfolyam.hu if dates are in the past."""
+    """Check if midrate table is up to date, if not, update table from napiarfolyam.hu"""
 
     if is_midrate_up_to_date():
         print("Foreign currency mid-rates are up to date!")
@@ -30,11 +33,12 @@ def midrate_updater(cursor):
     to_sql = to_sql[:-1]
     cursor.execute(to_sql)
 
+
 @cnx.connection_handler
 def is_midrate_up_to_date(cursor):
-    """Checks whether the dating in midrate table is today or not.
+    """Check whether the dating in midrate table is today or not
 
-    Returns:
+    Returns
         True: If the date in midrate table is TODAY
         False: If the date in the midrate table is YESTERDAY
     """
@@ -46,25 +50,26 @@ def is_midrate_up_to_date(cursor):
     except IndexError:
         return False
 
+
 @cnx.connection_handler
 def sql_table_import(cursor, file, database):
     with open(file) as f:
         headers_list = str(*itertools.islice(f, 1)).strip().split(";")
         data_list = list(line.strip().split(";") for line in f)
 
-    sql_query = "INSERT INTO " + database + " ("
+    sql_query = f"INSERT INTO {database} ("
     for header in headers_list:
-        sql_query += header + ", "
-    sql_query = sql_query[:-2] + ") VALUES "
+        sql_query += f"{header}, "
+    sql_query = f"{sql_query[:-2]}) VALUES "
 
     for data in data_list:
         sql_query += "("
         for value in data:
             if value.isnumeric():
-                sql_query += value + ", "
+                sql_query += f"{value}, "
             else:
-                sql_query += "'" + value + "', "
-        sql_query =  sql_query[:-2] + "), "
+                sql_query += f"'{value}', "
+        sql_query = f"{sql_query[:-2]}), "
     sql_query = sql_query[:-2]
     cursor.execute(sql_query)
 
@@ -74,12 +79,14 @@ def fetch_table(cursor, database):
     cursor.execute(f"SELECT * FROM {database}")
     return cursor.fetchall()
 
+
 @cnx.connection_handler
 def sql_execute(cursor, statement):
     cursor.execute(statement)
 
 
 class TestMidrate(unittest.TestCase):
+
     def setUp(self):
         midrate_updater()
         self._midrate_table = fetch_table("mid_exchange_rate")
@@ -97,10 +104,12 @@ class TestMidrate(unittest.TestCase):
 
     def test_currency_id_contents(self):
         self.assertEqual(set(element[0] for element in self._midrate_table),
-                         set(static_data.currencies),
+                         set(static_data.CURRENCIES),
                          "Testing if required currencies are present")
 
+
 class TestSQLTableImport(unittest.TestCase):
+
     def setUp(self):
         sql_execute("CREATE TABLE unittest (supplier_id INT NOT NULL AUTO_INCREMENT, "
                     "name VARCHAR(50) NOT NULL, contact_id INT NOT NULL, PRIMARY KEY (supplier_id));")
@@ -117,6 +126,7 @@ class TestSQLTableImport(unittest.TestCase):
 
     def tearDown(self):
         sql_execute("DROP TABLE unittest")
+
 
 if __name__ == '__main__':
     unittest.main()
