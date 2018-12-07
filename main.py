@@ -2,19 +2,6 @@ import cnx
 import midrate
 import static_data
 import ui
-from deprecated import test_queries
-
-
-@cnx.connection_handler
-def test_suite(cursor):
-    cursor.execute(test_queries.drop)
-    cursor.execute(test_queries.create)
-    cursor.execute(test_queries.populate)
-    cursor.execute(test_queries.select_by_salary)
-    top_earners = cursor.fetchall()
-    print('Employees who earn over 850 000 HUF/month:')
-    for employee_id, first_name, last_name, contact_id, location_id, status, department, role, salary_huf in top_earners:
-        print(f'- {first_name} {last_name} ({role} in {department}) earns {salary_huf} HUF')
 
 
 @cnx.connection_handler
@@ -171,13 +158,10 @@ def menu_handler():
     MENU[int(choice)][1]()
 
 
-def main(testing):
-    if testing:
-        test_suite()
-    else:
-        while True:
-            menu_handler()
+def main():
+    while True:
+        menu_handler()
 
 
 if __name__ == '__main__':
-    main(testing=False)
+    main()
