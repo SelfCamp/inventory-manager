@@ -72,6 +72,13 @@ Welcome to SelfCamp's very first project!
 
 ##### inventory-manager 0.1a
 *December 5, 2018*
-- ...
-- ...
-- ...
+- Placeholder data uploaded to SQL
+- SQL - Python connection established
+- Program is runnable from terminal
+- Automatic reset/restore database option added
+- Foreign currency mid-rate check and update available
+- User functions added:
+    - Complete inventory check
+    - Stock level check for certain item
+    - Stock level update
+  
