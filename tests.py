@@ -1,9 +1,8 @@
 import datetime as dt
 import unittest
 
-import cnx
-import static_data
-from menu_functions.csv_import import import_table_from_csv
+from common import cnx, constants
+from common.csv_import import import_table_from_csv
 from menu_functions.update_functions import set_midrate
 
 
@@ -37,7 +36,7 @@ class TestMidrate(unittest.TestCase):
 
     def test_currency_id_contents(self):
         self.assertEqual(set(element[0] for element in self._midrate_table),
-                         set(static_data.CURRENCIES),
+                         set(constants.CURRENCIES),
                          "Testing if required currencies are present")
 
 

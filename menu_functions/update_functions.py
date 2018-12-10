@@ -2,7 +2,7 @@ from xml.etree import ElementTree as ET
 import datetime as dt
 import requests
 
-import cnx
+from common import cnx
 from menu_functions.read_functions import is_midrate_up_to_date
 from menu_functions import read_queries as rq, update_queries as uq
 

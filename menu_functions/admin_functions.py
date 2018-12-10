@@ -1,6 +1,6 @@
-import cnx
-from menu_functions.csv_import import mass_import_data
-from menu_functions import read_queries as rq, update_queries as uq, admin_queries as aq
+from common import cnx, constants
+from common.csv_import import import_table_from_csv
+from menu_functions import admin_queries as aq
 
 
 @cnx.connection_handler()
@@ -27,6 +27,14 @@ def rebuild_tables(cursor):
     for statement in aq.create_database_multi.strip('; \n\t').split(';'):  # TODO: consider making this a `common` function
         cursor.execute(statement)
     print(" DONE")
+
+
+def mass_import_data():
+    """Add data to tables based on .CSV files in `/starter_data`, return `None`"""
+    for table, file in constants.STARTER_DATA_FILES.items():
+        print(f'Importing to {table}...', end='')
+        import_table_from_csv(file, table)
+        print(f" DONE")
 
 
 def reset_database():

@@ -1,6 +1,6 @@
 import datetime as dt
 
-import cnx
+from common import cnx
 import ui
 from menu_functions import read_queries as rq
 
