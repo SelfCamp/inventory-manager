@@ -1,6 +1,6 @@
 import cnx
 from db_functions.csv_import import mass_import_data
-from queries.schema import SCHEMA
+from queries.schema import SCHEMA_MULTI
 
 
 @cnx.connection_handler()
@@ -24,7 +24,7 @@ def drop_tables(cursor):
 def rebuild_tables(cursor):
     """Rebuild all tables from `/schema.py`, return `None`"""
     print("Rebuilding tables...", end='')
-    for statement in SCHEMA.strip('; \n\t').split(';'):  # TODO: consider making this a `common` function
+    for statement in SCHEMA_MULTI.strip('; \n\t').split(';'):  # TODO: consider making this a `common` function
         cursor.execute(statement)
     print(" DONE")
 
