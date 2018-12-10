@@ -11,9 +11,10 @@ def menu_handler():
         ('0: Reset database', af.reset_database),
         ('1: Check complete inventory', rf.get_inventory),
         ('2: Check stock level for product ID', rf.get_stock_level_for_product_id),
-        ('3: Update stock level for inventory ID', uf.set_stock_level_for_inventory_id),
-        ('4: Request supplier information', rf.get_available_suppliers),
-        ('5: Quit application', quit_application)
+        ('3: Request supplier information', rf.get_available_suppliers),
+        ('4: Check status of purchase order', rf.get_po_status_for_po_id),
+        ('5: Update stock level for inventory ID', uf.set_stock_level_for_inventory_id),
+        ('6: Quit application', quit_application)
     ]
     print('\nMENU')
     for description, fn in MENU:
