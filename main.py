@@ -1,5 +1,6 @@
 from menu_functions import admin_functions as af, read_functions as rf, update_functions as uf
-
+import hashlib
+from common import cnx
 
 def quit_application():
     print('\nGoodbye!\n')
@@ -24,7 +25,31 @@ def menu_handler():
     input('\nPress [Enter] to return to MENU')
 
 
+@cnx.connection_handler()
+def access(cursor):
+    user = input("Please enter your username")
+    passw = hash_sha256(input("Please enter your password"))
+    cursor.execute(f"SELECT password FROM users WHERE username = '{user}'")
+    try:
+        passw_in_db = cursor.fetchall()[0][0]
+    except IndexError:
+        print("Incorrect username or password")
+        return True
+    if passw_in_db.lower() == passw:
+        print(f"Welcome, {user}!")
+        return False
+    else:
+        print("Invalid username / password")
+        return True
+
+def hash_sha256(string):
+    hash_object = hashlib.sha256(bytes(f"{string}".encode("utf8")))
+    hex_dig = hash_object.hexdigest()
+    return hex_dig
+
 def main():
+    #while access():
+    #    continue
     while True:
         menu_handler()
 
