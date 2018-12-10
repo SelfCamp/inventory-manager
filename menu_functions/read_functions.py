@@ -13,7 +13,6 @@ def get_inventory(cursor):
     ui.print_title('Complete inventory across all locations (ordered by item name, location, then expiration date):')
     for loc, qty, exp, rack, shelf, name, unit in result:
         print(f'{name}: {qty} {unit} at {loc} on rack {rack}, shelf {shelf} (expires on {exp})')
-    input('\nPress [Enter] to return to MENU')
 
 
 @cnx.connection_handler()
@@ -24,7 +23,6 @@ def get_available_suppliers(cursor):
     ui.print_title(f'List of suppliers with corresponding products and contact details:')
     for record in records:
         print(record)
-    input('\nPress [Enter] to return to MENU')
     # TODO: Pretty printing
 
 
@@ -38,7 +36,6 @@ def get_stock_level_for_product_id(cursor):
     ui.print_title(f'Inventory of \'{name}\' across all locations (ordered by location, then expiration date):')
     for loc, qty, exp, rack, shelf, name, unit in result:
         print(f'{qty} {unit} at {loc} on rack {rack}, shelf {shelf} (expires on {exp})')
-    input('\nPress [Enter] to return to MENU')
 
 
 @cnx.connection_handler()

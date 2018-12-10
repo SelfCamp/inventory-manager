@@ -20,6 +20,7 @@ def menu_handler():
         print(description)
     choice = input('\nPlease type number of your choice: ')
     MENU[int(choice)][1]()
+    input('\nPress [Enter] to return to MENU')
 
 
 def main():

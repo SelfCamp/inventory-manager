@@ -21,7 +21,6 @@ def set_stock_level_for_inventory_id(cursor):
     result = cursor.fetchall()
     for loc, qty, exp, rack, shelf, name, unit in result:
         print(f'\nUpdated quantity of \'{name}\' at {loc} on rack {rack}, shelf {shelf} (expires on {exp}): {qty} {unit}')
-    input('Press [Enter] to return to MENU')
 
 
 @cnx.connection_handler()

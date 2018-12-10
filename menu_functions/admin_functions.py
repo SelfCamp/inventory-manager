@@ -35,4 +35,3 @@ def reset_database():
     rebuild_tables()
     mass_import_data()
     print("\nReset finished!")
-    input('\nPress [Enter] to return to MENU')
