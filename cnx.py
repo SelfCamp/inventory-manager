@@ -35,15 +35,22 @@ def get_connection(remote=True):
         return mysql.connector.connect(**LOCAL)
 
 
-def connection_handler(fn):
-    """Set up database connection & cursor, call `fn` with cursor, close connection, return `fn` result"""
-    @wraps(fn)
-    def wrapper(*args, **kwargs):
-        connection = get_connection()
-        connection.autocommit = True
-        cursor = connection.cursor()
-        result = fn(cursor, *args, **kwargs)
-        cursor.close()
-        connection.close()
-        return result
-    return wrapper
+def connection_handler(dictionary=False):
+    """Set up database connection & cursor, call `fn` with cursor, commit & close connection, return `fn` result
+
+    Args
+        - `dictionary=True` (optional): make dictionary cursor instead of default list cursor
+    """
+    def inner(fn):
+        @wraps(fn)
+        def wrapper(*args, **kwargs):
+            connection = get_connection()
+            connection.autocommit = False
+            cursor = connection.cursor(dictionary=dictionary)
+            result = fn(cursor, *args, **kwargs)
+            connection.commit()
+            cursor.close()
+            connection.close()
+            return result
+        return wrapper
+    return inner

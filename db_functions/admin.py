@@ -1,40 +1,31 @@
 import cnx
 from db_functions.csv_import import mass_import_data
+from queries.schema import SCHEMA
 
 
-@cnx.connection_handler
+@cnx.connection_handler()
 def list_all_tables(cursor):
     """Return currently active databases as `list`"""
     cursor.execute("SHOW TABLES")
     return list(table[0] for table in cursor.fetchall())
 
 
-@cnx.connection_handler
+@cnx.connection_handler()
 def drop_tables(cursor):
     """Delete all active tables, return `None`"""
     print("Dropping tables...", end='')
     tables = list_all_tables()
-    sql_statement = ""
     for table in tables:
-        sql_statement += f"DROP TABLE {table};"
-    try:
-        cursor.execute(sql_statement)
-    except:
-        pass
+        cursor.execute(f"DROP TABLE {table}")
     print(" Whoops!")
 
 
-@cnx.connection_handler
+@cnx.connection_handler()
 def rebuild_tables(cursor):
-    """Rebuild all tables from `/schema.sql`, return `None`"""
+    """Rebuild all tables from `/schema.py`, return `None`"""
     print("Rebuilding tables...", end='')
-    sql_statement = ""
-    with open("queries/schema.sql") as f:
-        sql_statement += f.read()
-    try:
-        cursor.execute(sql_statement)
-    except:
-        pass
+    for statement in SCHEMA.strip('; \n\t').split(';'):  # TODO: consider making this a `common` function
+        cursor.execute(statement)
     print(" DONE")
 
 

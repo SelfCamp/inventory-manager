@@ -7,13 +7,13 @@ from db_functions.csv_import import sql_table_import
 from db_functions.update import midrate_updater
 
 
-@cnx.connection_handler
+@cnx.connection_handler()
 def fetch_table(cursor, table):
     cursor.execute(f"SELECT * FROM {table}")
     return cursor.fetchall()
 
 
-@cnx.connection_handler
+@cnx.connection_handler()
 def sql_execute(cursor, statement):
     cursor.execute(statement)
 

@@ -6,7 +6,7 @@ import cnx
 from db_functions.read import is_midrate_up_to_date
 
 
-@cnx.connection_handler
+@cnx.connection_handler()
 def update_stock_level_for_inventory_id(cursor):
     """Update stock level for a given inventory ID from user input"""
     inventory_id = input('\nPlease enter inventory ID: ')
@@ -38,7 +38,7 @@ def update_stock_level_for_inventory_id(cursor):
     input('Press [Enter] to return to MENU')
 
 
-@cnx.connection_handler
+@cnx.connection_handler()
 def midrate_updater(cursor):
     """Check if midrate table is up to date, if not, update table from napiarfolyam.hu"""
 

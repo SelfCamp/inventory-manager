@@ -1,3 +1,4 @@
+SCHEMA = """
 CREATE TABLE inventory (
 inventory_id    INT NOT NULL AUTO_INCREMENT,
 product_id      INT NOT NULL,
@@ -186,3 +187,4 @@ ALTER TABLE employees
 ADD FOREIGN KEY (contact_id) REFERENCES contacts(contact_id);
 ALTER TABLE employees
 ADD FOREIGN KEY (location_id) REFERENCES locations(location_id);
+"""

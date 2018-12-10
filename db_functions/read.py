@@ -4,7 +4,7 @@ import cnx
 import ui
 
 
-@cnx.connection_handler
+@cnx.connection_handler()
 def get_inventory(cursor):
     """Fancy-print complete inventory across all locations"""
     cursor.execute("""
@@ -21,7 +21,7 @@ def get_inventory(cursor):
     input('\nPress [Enter] to return to MENU')
 
 
-@cnx.connection_handler
+@cnx.connection_handler()
 def check_available_suppliers(cursor):
     """Print list of suppliers with corresponding products and contact details, return `None`"""
     cursor.execute("""SELECT suppliers.supplier_id, suppliers.name, products.name AS "supplies", contacts.email, contacts.phone_no 
@@ -36,7 +36,7 @@ def check_available_suppliers(cursor):
     # TODO: Pretty printing
 
 
-@cnx.connection_handler
+@cnx.connection_handler()
 def get_stock_level_for_product_id(cursor):
     """Print stock level for a given product ID from user input"""
     product_id = input('\nPlease enter product ID: ')
@@ -56,7 +56,7 @@ def get_stock_level_for_product_id(cursor):
     input('\nPress [Enter] to return to MENU')
 
 
-@cnx.connection_handler
+@cnx.connection_handler()
 def is_midrate_up_to_date(cursor):
     """Check whether the dating in midrate table is today or not
 
