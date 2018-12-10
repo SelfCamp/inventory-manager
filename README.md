@@ -36,15 +36,18 @@ Welcome to SelfCamp's very first project!
 - F-strings are preferred over `.format()` and plain concatenation
 - Multi-line statements in brackets are formatted in [Stroustrup style](https://en.wikipedia.org/wiki/Indentation_style#Variant:_Stroustrup)
 - Quotes (single/double) are a personal preference
+- Function names start with a verb describing what the function does (most likely `'get_'` or `'set_'`)
 - SQL
     - No duplicate prefixes in database column names (only ids are prefixed with name of table)
     - Queries are stored as strings
-    - Multi-query statements are postfixed `'_multi'`
     - Queries longer than 1 line are extracted to and imported from `queries` module
+    - Multi-query statements are postfixed `'_multi'`
+    - Query names are prefixed `'create_'`/`'read_'`/`'update_'`/`'delete_'` based on which CRUD category they belong to
 
 #### SQL queries
 - We don't use `multi=True` in `cursor.execute()` because it's nasty and even the Oracle docs say to avoid it
 - We split `'*_multi'` queries on the semicolon instead, execute them separately and commit explicitly
+- We use parameterized queries instead of concatenation wherever possible
 
 #### Setup
 - **Set environment variables for database access**
