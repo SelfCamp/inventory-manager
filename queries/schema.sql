@@ -80,7 +80,7 @@ user_id         INT NOT NULL AUTO_INCREMENT,                -- needed only to en
 access_level_id INT NOT NULL,
 employee_id     INT NOT NULL,
 username        VARCHAR(50) NOT NULL,
-password        VARCHAR(50) NOT NULL,
+password        CHAR(64) NOT NULL,
 PRIMARY KEY (user_id)
 );
 
