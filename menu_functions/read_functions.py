@@ -38,6 +38,21 @@ def get_stock_level_for_product_id(cursor):
         print(f'{qty} {unit} at {loc} on rack {rack}, shelf {shelf} (expires on {exp})')
 
 
+@cnx.connection_handler(dictionary=True)
+def get_po_status_for_po_id(cursor):
+    """Print status of purchase order for a given PO ID from user input"""
+    po_id = input('\nPlease enter PO ID: ')
+    cursor.execute(rq.read_po_status_for_po_id, {'po_id': po_id})
+    ui.print_title(f'Status of purchase order #{po_id}:')
+    result = cursor.fetchall()[0]
+    print(f"Supplier:      {result['supplier']}\n"
+          f"Date ordered:  {result['date_ordered']}\n"
+          f"ETA:           {result['date_eta']}\n"
+          f"Date arrived:  {result['date_arrived']}\n"
+          f"Signee:        {result['signee']}\n"
+          f"Status:        {result['po_status']}")
+
+
 @cnx.connection_handler()
 def is_midrate_up_to_date(cursor):
     """Check whether the dating in midrate table is today or not
