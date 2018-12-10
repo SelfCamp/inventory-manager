@@ -15,8 +15,10 @@ def drop_tables(cursor):
     """Delete all active tables, return `None`"""
     print("Dropping tables...", end='')
     tables = list_all_tables()
+    cursor.execute("SET FOREIGN_KEY_CHECKS=0")
     for table in tables:
         cursor.execute(f"DROP TABLE {table}")
+    cursor.execute("SET FOREIGN_KEY_CHECKS=1")
     print(" Whoops!")
 
 

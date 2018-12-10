@@ -23,4 +23,6 @@ def import_table_from_csv(cursor, file, database):
                 sql_query += f"'{value}', "
         sql_query = f"{sql_query[:-2]}), "
     sql_query = sql_query[:-2]
+    cursor.execute("SET FOREIGN_KEY_CHECKS=0")
     cursor.execute(sql_query)
+    cursor.execute("SET FOREIGN_KEY_CHECKS=1")
