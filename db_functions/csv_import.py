@@ -6,7 +6,7 @@ import static_data
 
 @cnx.connection_handler
 def sql_table_import(cursor, file, database):
-    with open(file) as f:
+    with open(file, encoding="utf8") as f:
         headers_list = str(*itertools.islice(f, 1)).strip().split(";")
         data_list = list(line.strip().split(";") for line in f)
 
