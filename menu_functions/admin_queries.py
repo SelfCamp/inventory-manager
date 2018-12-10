@@ -1,4 +1,4 @@
-SCHEMA_MULTI = """
+create_database_multi = """
 CREATE TABLE inventory (
 inventory_id    INT NOT NULL AUTO_INCREMENT,
 product_id      INT NOT NULL,

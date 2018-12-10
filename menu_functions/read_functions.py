@@ -2,18 +2,13 @@ import datetime as dt
 
 import cnx
 import ui
+from menu_functions import read_queries as rq
 
 
 @cnx.connection_handler()
 def get_inventory(cursor):
     """Fancy-print complete inventory across all locations"""
-    cursor.execute("""
-        SELECT inv.location_id, inv.quantity, inv.expiration_date, inv.rack_no, inv.shelf_no,
-               prod.name, prod.unit
-        FROM inventory inv JOIN products prod
-        ON inv.product_id = prod.product_id
-        ORDER BY prod.name, inv.location_id, inv.expiration_date;
-    """)
+    cursor.execute(rq.read_inventory)
     result = cursor.fetchall()
     ui.print_title('Complete inventory across all locations (ordered by item name, location, then expiration date):')
     for loc, qty, exp, rack, shelf, name, unit in result:
@@ -22,12 +17,9 @@ def get_inventory(cursor):
 
 
 @cnx.connection_handler()
-def check_available_suppliers(cursor):
+def get_available_suppliers(cursor):
     """Print list of suppliers with corresponding products and contact details, return `None`"""
-    cursor.execute("""SELECT suppliers.supplier_id, suppliers.name, products.name AS "supplies", contacts.email, contacts.phone_no 
-                    FROM suppliers JOIN products_to_suppliers ON suppliers.supplier_id = products_to_suppliers.product_id 
-                    JOIN products ON products.product_id = products_to_suppliers.product_id 
-                    JOIN contacts ON contacts.contact_id = suppliers.contact_id""")
+    cursor.execute(rq.read_available_suppliers)
     records = list(dict(zip(cursor.column_names, fetch)) for fetch in cursor.fetchall())
     ui.print_title(f'List of suppliers with corresponding products and contact details:')
     for record in records:
@@ -40,14 +32,7 @@ def check_available_suppliers(cursor):
 def get_stock_level_for_product_id(cursor):
     """Print stock level for a given product ID from user input"""
     product_id = input('\nPlease enter product ID: ')
-    cursor.execute(f"""
-        SELECT inv.location_id, inv.quantity, inv.expiration_date, inv.rack_no, inv.shelf_no,
-               prod.name, prod.unit
-        FROM inventory inv JOIN products prod
-        ON inv.product_id = prod.product_id
-        WHERE prod.product_id = {product_id}
-        ORDER BY inv.location_id, inv.expiration_date;
-    """)
+    cursor.execute(rq.read_stock_level_for_product_id, {'product_id': product_id})
     result = cursor.fetchall()
     name = result[0][5]
     ui.print_title(f'Inventory of \'{name}\' across all locations (ordered by location, then expiration date):')

@@ -3,8 +3,8 @@ import unittest
 
 import cnx
 import static_data
-from db_functions.csv_import import sql_table_import
-from db_functions.update import midrate_updater
+from menu_functions.csv_import import import_table_from_csv
+from menu_functions.update_functions import set_midrate
 
 
 @cnx.connection_handler()
@@ -21,7 +21,7 @@ def sql_execute(cursor, statement):
 class TestMidrate(unittest.TestCase):
 
     def setUp(self):
-        midrate_updater()
+        set_midrate()
         self._midrate_table = fetch_table("mid_exchange_rate")
 
     def test_number_of_records(self):
@@ -46,7 +46,7 @@ class TestSQLTableImport(unittest.TestCase):
     def setUp(self):
         sql_execute("CREATE TABLE unittest (supplier_id INT NOT NULL AUTO_INCREMENT, "
                     "name VARCHAR(50) NOT NULL, contact_id INT NOT NULL, PRIMARY KEY (supplier_id));")
-        sql_table_import("starter_data/unittest_table.csv", "unittest")
+        import_table_from_csv("starter_data/unittest_table.csv", "unittest")
         with open("starter_data/unittest_table.csv") as f:
             self._file = list(line.strip().split(";") for line in f)[1:]
         self._sql = fetch_table("unittest")

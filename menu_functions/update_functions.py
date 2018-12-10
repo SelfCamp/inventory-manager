@@ -3,35 +3,21 @@ import datetime as dt
 import requests
 
 import cnx
-from db_functions.read import is_midrate_up_to_date
+from menu_functions.read_functions import is_midrate_up_to_date
+from menu_functions import read_queries as rq, update_queries as uq
 
 
 @cnx.connection_handler()
-def update_stock_level_for_inventory_id(cursor):
+def set_stock_level_for_inventory_id(cursor):
     """Update stock level for a given inventory ID from user input"""
     inventory_id = input('\nPlease enter inventory ID: ')
-    cursor.execute(f"""
-        SELECT inv.location_id, inv.quantity, inv.expiration_date, inv.rack_no, inv.shelf_no,
-               prod.name, prod.unit
-        FROM inventory inv JOIN products prod
-        ON inv.product_id = prod.product_id
-        WHERE inv.inventory_id = {inventory_id}
-    """)
+    cursor.execute(rq.read_stock_level_for_inventory_id, {'inventory_id': inventory_id})
     result = cursor.fetchall()
     for loc, qty, exp, rack, shelf, name, unit in result:
         print(f'\nCurrent quantity of \'{name}\' at {loc} on rack {rack}, shelf {shelf} (expires on {exp}): {qty} {unit}')
     new_level = input('Please enter new quantity: ')
-    cursor.execute(f"""
-        UPDATE inventory SET quantity = {new_level}
-        WHERE inventory_id = {inventory_id}
-    """)
-    cursor.execute(f"""
-        SELECT inv.location_id, inv.quantity, inv.expiration_date, inv.rack_no, inv.shelf_no,
-               prod.name, prod.unit
-        FROM inventory inv JOIN products prod
-        ON inv.product_id = prod.product_id
-        WHERE inv.inventory_id = {inventory_id}
-    """)
+    cursor.execute(uq.update_stock_level_for_inventory_id, {'new_level': new_level, 'inventory_id': inventory_id})
+    cursor.execute(rq.read_stock_level_for_inventory_id, {'inventory_id': inventory_id})
     result = cursor.fetchall()
     for loc, qty, exp, rack, shelf, name, unit in result:
         print(f'\nUpdated quantity of \'{name}\' at {loc} on rack {rack}, shelf {shelf} (expires on {exp}): {qty} {unit}')
@@ -39,7 +25,7 @@ def update_stock_level_for_inventory_id(cursor):
 
 
 @cnx.connection_handler()
-def midrate_updater(cursor):
+def set_midrate(cursor):
     """Check if midrate table is up to date, if not, update table from napiarfolyam.hu"""
 
     if is_midrate_up_to_date():

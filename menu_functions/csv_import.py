@@ -4,8 +4,8 @@ import cnx
 import static_data
 
 
-@cnx.connection_handler
-def sql_table_import(cursor, file, database):
+@cnx.connection_handler()
+def import_table_from_csv(cursor, file, database):
     with open(file, encoding="utf8") as f:
         headers_list = str(*itertools.islice(f, 1)).strip().split(";")
         data_list = list(line.strip().split(";") for line in f)
@@ -31,5 +31,5 @@ def mass_import_data():
     """Add data to tables based on .CSV files in `/starter_data`, return `None`"""
     for table, file in static_data.STARTER_DATA_FILES.items():
         print(f'Importing to {table}...', end='')
-        sql_table_import(file, table)
+        import_table_from_csv(file, table)
         print(f" DONE")

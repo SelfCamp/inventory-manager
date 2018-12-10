@@ -1,4 +1,4 @@
-from db_functions import admin, read, update
+from menu_functions import admin_functions as af, read_functions as rf, update_functions as uf
 
 
 def quit_application():
@@ -8,11 +8,11 @@ def quit_application():
 
 def menu_handler():
     MENU = [
-        ('0: Reset database', admin.reset_database),
-        ('1: Check complete inventory', read.get_inventory),
-        ('2: Check stock level for product ID', read.get_stock_level_for_product_id),
-        ('3: Update stock level for inventory ID', update.update_stock_level_for_inventory_id),
-        ('4: Request supplier information', read.check_available_suppliers),
+        ('0: Reset database', af.reset_database),
+        ('1: Check complete inventory', rf.get_inventory),
+        ('2: Check stock level for product ID', rf.get_stock_level_for_product_id),
+        ('3: Update stock level for inventory ID', uf.set_stock_level_for_inventory_id),
+        ('4: Request supplier information', rf.get_available_suppliers),
         ('5: Quit application', quit_application)
     ]
     print('\nMENU')
