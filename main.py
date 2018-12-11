@@ -27,21 +27,21 @@ def menu_handler():
 
 
 @cnx.connection_handler()
-def access(cursor):
-    user = input("Please enter your username")
-    passw = hash_sha256(input("Please enter your password"))
-    cursor.execute("SELECT password FROM users WHERE username = '%(username)s'" % {"username": user})
-    try:
-        passw_in_db = cursor.fetchall()[0][0]
-    except IndexError:
-        print("Incorrect username or password")
-        return True
-    if passw_in_db.lower() == passw:
-        print(f"Welcome, {user}!")
-        return False
-    else:
-        print("Invalid username / password")
-        return True
+def authentication(cursor):
+    while True:
+        user = input("Please enter your username or X to quit\n")
+        if user.lower() == "x": quit()
+        password = hash_sha256(input("Please enter your password\n"))
+        cursor.execute("SELECT password FROM users WHERE username = '%(username)s'" % {"username": user})
+        try:
+            password_in_db = cursor.fetchall()[0][0]
+        except IndexError:
+            print("Incorrect username or password")
+        if password_in_db.lower() == password:
+            print(f"Welcome, {user}!\n")
+            break
+        else:
+            print("Invalid username / password")
 
 
 def hash_sha256(string):
@@ -51,8 +51,7 @@ def hash_sha256(string):
 
 
 def main():
-    while access():
-        continue
+    authentication()
     while True:
         menu_handler()
 
