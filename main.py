@@ -2,6 +2,7 @@ from menu_functions import admin_functions as af, read_functions as rf, update_f
 import hashlib
 from common import cnx
 
+
 def quit_application():
     print('\nGoodbye!\n')
     quit()
@@ -29,7 +30,7 @@ def menu_handler():
 def access(cursor):
     user = input("Please enter your username")
     passw = hash_sha256(input("Please enter your password"))
-    cursor.execute(f"SELECT password FROM users WHERE username = '{user}'")
+    cursor.execute("SELECT password FROM users WHERE username = '%(username)s'" % {"username": user})
     try:
         passw_in_db = cursor.fetchall()[0][0]
     except IndexError:
@@ -42,14 +43,16 @@ def access(cursor):
         print("Invalid username / password")
         return True
 
+
 def hash_sha256(string):
     hash_object = hashlib.sha256(bytes(f"{string}".encode("utf8")))
     hex_dig = hash_object.hexdigest()
     return hex_dig
 
+
 def main():
-    #while access():
-    #    continue
+    while access():
+        continue
     while True:
         menu_handler()
 
