@@ -1,7 +1,6 @@
 from common.authentication import authentication
 from menu_functions import admin_functions as af, read_functions as rf, update_functions as uf
 
-
 def quit_application():
     print('\nGoodbye!\n')
     quit()
@@ -26,7 +25,8 @@ def menu_handler():
 
 
 def main():
-    authentication(2)
+    authentication(2) #try with user: jakobi1 - pass: abcd (jakobi - egy)
+    uf.set_midrate()
     while True:
         menu_handler()
 
