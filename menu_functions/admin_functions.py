@@ -1,4 +1,4 @@
-from common import cnx, constants
+from common import cnx, constants, general
 from common.csv_import import import_table_from_csv
 from menu_functions import admin_queries as aq
 
@@ -26,7 +26,9 @@ def drop_tables(cursor):
 def rebuild_tables(cursor):
     """Rebuild all tables from original schema, return `None`"""
     print("Rebuilding tables...", end='')
-    for statement in aq.create_database_multi.strip('; \n\t').split(';'):  # TODO: consider making this a `common` function
+    for statement in general.break_up_query(aq.create_tables_multi):
+        cursor.execute(statement)
+    for statement in general.break_up_query(aq.update_table_relations_multi):
         cursor.execute(statement)
     print(" DONE")
 

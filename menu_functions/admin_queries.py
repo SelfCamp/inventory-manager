@@ -1,4 +1,4 @@
-create_database_multi = """
+create_tables_multi = """
     CREATE TABLE inventory (
     inventory_id    INT NOT NULL AUTO_INCREMENT,
     product_id      INT NOT NULL,
@@ -134,9 +134,9 @@ create_database_multi = """
     salary_huf      DECIMAL(10,2) NOT NULL,
     PRIMARY KEY (employee_id)
     );
+"""
     
-    
-    
+update_table_relations_multi = """
     ALTER TABLE inventory
     ADD FOREIGN KEY (product_id) REFERENCES products(product_id);
     ALTER TABLE inventory
