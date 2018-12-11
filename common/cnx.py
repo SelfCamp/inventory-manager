@@ -1,6 +1,3 @@
-"""Everything related to database connection"""
-
-
 import os
 from functools import wraps
 

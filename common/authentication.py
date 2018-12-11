@@ -38,8 +38,6 @@ def authentication(cursor, max_attempts=999):
 
 def hash_sha256(text):
     """Take `text` (integer or string) and return hashed string with sha256 encryption"""
-
     hash_object = hashlib.sha256(bytes(f"{text}".encode("utf8")))
     hex_dig = hash_object.hexdigest()
     return hex_dig
-

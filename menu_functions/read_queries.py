@@ -1,4 +1,4 @@
-read_stock_level_for_product_id = f"""
+read_stock_level_for_product_id = """
     SELECT inv.location_id, inv.quantity, inv.expiration_date, inv.rack_no, inv.shelf_no,
            prod.name, prod.unit
     FROM inventory inv JOIN products prod
