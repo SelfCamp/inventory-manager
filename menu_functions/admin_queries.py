@@ -80,7 +80,7 @@ create_tables_multi = """
     user_id         INT NOT NULL AUTO_INCREMENT,                -- needed only to enable changing of usernames later
     access_level_id INT NOT NULL,
     employee_id     INT NOT NULL,
-    username        VARCHAR(50) NOT NULL,
+    username        VARCHAR(50) NOT NULL UNIQUE,
     password        CHAR(64) NOT NULL,
     PRIMARY KEY (user_id)
     );
