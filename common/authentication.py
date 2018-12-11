@@ -5,6 +5,11 @@ from common import cnx
 
 @cnx.connection_handler()
 def authentication(cursor, max_attempts=999):
+    """Authenticate user, return `True` if authentication is successful
+
+    Args
+        - `max_attempts=999` (optional): Max number of login attempts before the code terminates (999 by default)
+    """
     num_of_attempts = 0
     while True:
         if num_of_attempts >= max_attempts:
@@ -22,9 +27,9 @@ def authentication(cursor, max_attempts=999):
             print("Incorrect username or password")
             num_of_attempts += 1
             continue
-        if password_in_db.lower() == password:
+        if password_in_db == password:
             print(f"Welcome, {user}!\n")
-            break
+            return True
         else:
             print("Invalid username / password")
             num_of_attempts += 1
@@ -32,6 +37,8 @@ def authentication(cursor, max_attempts=999):
 
 
 def hash_sha256(string):
+    """Take `string` and return hashed string with sha256 encryption"""
+
     hash_object = hashlib.sha256(bytes(f"{string}".encode("utf8")))
     hex_dig = hash_object.hexdigest()
     return hex_dig
