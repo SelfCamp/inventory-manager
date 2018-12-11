@@ -1,5 +1,6 @@
 import datetime as dt
 import unittest
+from common import authentication
 
 from common import cnx, constants
 from common.csv_import import import_table_from_csv
@@ -59,6 +60,14 @@ class TestSQLTableImport(unittest.TestCase):
     def tearDown(self):
         sql_execute("DROP TABLE unittest")
 
+
+class TestHashSha256(unittest.TestCase):
+
+    def test_hashing(self):
+        self.assertEqual(authentication.hash_sha256(
+            "Teljes összhangban kell szinkronba hozni a hatékony ágazatközi munkamegosztást."),
+            "cd25b84ac3b573244bfc8b2fba257e244da3cd26b1718fb433c3620b733e7723",
+            "Testing hash generation")
 
 if __name__ == '__main__':
     unittest.main()
