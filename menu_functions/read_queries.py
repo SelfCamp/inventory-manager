@@ -43,3 +43,13 @@ read_stock_level_for_inventory_id = """
     ON inv.product_id = prod.product_id
     WHERE inv.inventory_id = %(inventory_id)s
 """
+
+read_user_info = """
+SELECT username, access_levels.access_level_id, first_name, last_name, location_id, department, role, locality,
+       phone_no, email, address_line1, address_line2, region, postcode, country, salary_huf
+FROM users
+JOIN access_levels ON users.access_level_id = access_levels.access_level_id
+JOIN employees ON users.employee_id = employees.employee_id
+JOIN contacts ON contacts.contact_id = employees.employee_id
+WHERE username = %(username)s
+"""

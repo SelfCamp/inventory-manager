@@ -68,3 +68,10 @@ def is_midrate_up_to_date(cursor):
         return False
     except IndexError:
         return False
+
+
+@cnx.connection_handler()
+def get_employee_data(cursor, username):
+    """Get all user data except password for user from database. Return it as `list`"""
+    cursor.execute(rq.read_user_info, {"username": username})
+    return cursor.fetchall()  # TODO: Error proofing, list flattening
