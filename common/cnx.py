@@ -35,7 +35,7 @@ def get_connection(remote=True):
 def connection_handler(dictionary=False):
     """Set up database connection & cursor, call `fn` with cursor, commit & close connection, return `fn` result
 
-    Args
+    Kwargs
         - `dictionary=True` (optional): make dictionary cursor instead of default list cursor
     """
     def inner(fn):
