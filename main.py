@@ -4,25 +4,25 @@ from classes.User import User
 
 
 def quit_application(current_user):
-    print(f'\nGoodbye {current_user.username}!\n')
+    print(f'\nGoodbye, {current_user.username}!\n')
     quit()
 
 
 def menu_handler(current_user):
     MENU = [
-        ('0: Reset database', af.reset_database),
-        ('1: Check complete inventory', rf.get_inventory),
-        ('2: Check stock level for product ID', rf.get_stock_level_for_product_id),
-        ('3: Request supplier information', rf.get_available_suppliers),
-        ('4: Check status of purchase order', rf.get_po_status_for_po_id),
-        ('5: Update stock level for inventory ID', uf.set_stock_level_for_inventory_id),
-        ('6: Quit application', quit_application)
+        {'description': '0: Reset database',                      'fn': af.reset_database},
+        {'description': '1: Check complete inventory',            'fn': rf.get_inventory},
+        {'description': '2: Check stock level for product ID',    'fn': rf.get_stock_level_for_product_id},
+        {'description': '3: Request supplier information',        'fn': rf.get_available_suppliers},
+        {'description': '4: Check status of purchase order',      'fn': rf.get_po_status_for_po_id},
+        {'description': '5: Update stock level for inventory ID', 'fn': uf.set_stock_level_for_inventory_id},
+        {'description': '6: Quit application',                    'fn': quit_application}
     ]
     print('\nMENU')
-    for description, fn in MENU:
-        print(description)
-    choice = input('\nPlease type number of your choice: ')
-    MENU[int(choice)][1](current_user)
+    for item in MENU:
+        print(item['description'])
+    choice = int(input('\nPlease type number of your choice: '))
+    MENU[choice]['fn'](current_user)
     input('\nPress [Enter] to return to MENU')
 
 
