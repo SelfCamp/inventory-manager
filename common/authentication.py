@@ -1,6 +1,7 @@
 import hashlib
 
 from common import cnx
+from common.general import quit_application
 
 
 @cnx.connection_handler()
@@ -14,10 +15,10 @@ def authentication(cursor, max_attempts=999):
     while True:
         if num_of_attempts >= max_attempts:
             print("Too many failed login attempts")
-            quit()
+            quit_application()
         username = input("Please enter your username or X to quit\n")
         if username.lower() == "x":
-            quit()
+            quit_application()
         password = hash_sha256(input("Please enter your password\n"))
 
         cursor.execute("SELECT password FROM users WHERE username = %(username)s", params={"username": username})

@@ -1,11 +1,7 @@
-from common.authentication import authentication
-from menu_functions import admin_functions as af, read_functions as rf, update_functions as uf
 from classes.User import User
-
-
-def quit_application(current_user):
-    print(f'\nGoodbye, {current_user.username}!\n')
-    quit()
+from common.authentication import authentication
+from common.general import quit_application
+from menu_functions import admin_functions as af, read_functions as rf, update_functions as uf
 
 
 def menu_handler(current_user):

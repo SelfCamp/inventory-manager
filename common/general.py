@@ -6,3 +6,11 @@ def break_up_query(multi_query):
     """
     multi_query = multi_query.strip('; \n\t')  # prevent final `split(';')` from creating empty strings
     return multi_query.split(';')
+
+
+def quit_application(current_user=None):
+    if not current_user:
+        print(f'\nGoodbye!\n')
+    else:
+        print(f'\nGoodbye, {current_user.username}!\n')
+    quit()
