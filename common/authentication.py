@@ -5,8 +5,8 @@ from common.general import quit_application
 
 
 @cnx.connection_handler()
-def authentication(cursor, max_attempts=999):
-    """Authenticate user, return `True` if authentication is successful
+def authenticate(cursor, max_attempts=999):
+    """Authenticate user, return `username` if authentication is successful, else `None`
 
     Args
         - `max_attempts=999` (optional): Max number of login attempts before the code terminates (999 by default)
@@ -15,7 +15,7 @@ def authentication(cursor, max_attempts=999):
     while True:
         if num_of_attempts >= max_attempts:
             print("Too many failed login attempts")
-            quit_application()
+            return None
         username = input("Please enter your username or X to quit\n")
         if username.lower() == "x":
             quit_application()

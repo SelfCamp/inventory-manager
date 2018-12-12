@@ -1,5 +1,5 @@
 from classes.User import User
-from common.authentication import authentication
+from common.authentication import authenticate
 from common.general import quit_application
 from menu_functions import admin_functions as af, read_functions as rf, update_functions as uf
 
@@ -23,7 +23,7 @@ def menu_handler(current_user):
 
 
 def main():
-    username = authentication(2)
+    username = authenticate(max_attempts=2) or quit_application()
     current_user = User(username)
     uf.set_midrate()
     while True:
