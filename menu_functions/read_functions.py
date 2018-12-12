@@ -6,7 +6,7 @@ from menu_functions import read_queries as rq
 
 
 @cnx.connection_handler()
-def get_inventory(cursor):
+def get_inventory(cursor, current_user):
     """Fancy-print complete inventory across all locations"""
     cursor.execute(rq.read_inventory)
     result = cursor.fetchall()
@@ -16,7 +16,7 @@ def get_inventory(cursor):
 
 
 @cnx.connection_handler()
-def get_available_suppliers(cursor):
+def get_available_suppliers(cursor, current_user):
     """Print list of suppliers with corresponding products and contact details, return `None`"""
     cursor.execute(rq.read_available_suppliers)
     records = list(dict(zip(cursor.column_names, fetch)) for fetch in cursor.fetchall())
@@ -27,7 +27,7 @@ def get_available_suppliers(cursor):
 
 
 @cnx.connection_handler()
-def get_stock_level_for_product_id(cursor):
+def get_stock_level_for_product_id(cursor, current_user):
     """Print stock level for a given product ID from user input"""
     product_id = input('\nPlease enter product ID: ')
     cursor.execute(rq.read_stock_level_for_product_id, params={'product_id': product_id})
@@ -39,7 +39,7 @@ def get_stock_level_for_product_id(cursor):
 
 
 @cnx.connection_handler(dictionary=True)
-def get_po_status_for_po_id(cursor):
+def get_po_status_for_po_id(cursor, current_user):
     """Print status of purchase order for a given PO ID from user input"""
     po_id = input('\nPlease enter PO ID: ')
     cursor.execute(rq.read_po_status_for_po_id, params={'po_id': po_id})
@@ -70,8 +70,8 @@ def is_midrate_up_to_date(cursor):
         return False
 
 
-@cnx.connection_handler()
+@cnx.connection_handler(dictionary=True)
 def get_employee_data(cursor, username):
-    """Get all user data except password for user from database. Return it as `list`"""
+    """Get all user data except password for user from database. Return it as `dictionary`"""
     cursor.execute(rq.read_user_info, params={"username": username})
-    return cursor.fetchall()  # TODO: Error proofing, list flattening
+    return cursor.fetchall()[0]  # TODO: Error proofing, list flattening

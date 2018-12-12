@@ -45,7 +45,7 @@ read_stock_level_for_inventory_id = """
 """
 
 read_user_info = """
-SELECT username, access_levels.access_level_id, first_name, last_name, location_id, department, role, locality,
+SELECT username, access_levels.access_level_id AS access_level_id, first_name, last_name, location_id, department, role, locality,
        phone_no, email, address_line1, address_line2, region, postcode, country, salary_huf
 FROM users
 JOIN access_levels ON users.access_level_id = access_levels.access_level_id

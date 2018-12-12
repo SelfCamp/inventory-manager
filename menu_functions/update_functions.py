@@ -8,7 +8,7 @@ from menu_functions import read_queries as rq, update_queries as uq
 
 
 @cnx.connection_handler()
-def set_stock_level_for_inventory_id(cursor):
+def set_stock_level_for_inventory_id(cursor, current_user):
     """Update stock level for a given inventory ID from user input"""
     inventory_id = input('\nPlease enter inventory ID: ')
     cursor.execute(rq.read_stock_level_for_inventory_id, params={'inventory_id': inventory_id})

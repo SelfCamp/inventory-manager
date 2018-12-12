@@ -41,7 +41,7 @@ def mass_import_data():
         print(f" DONE")
 
 
-def reset_database():
+def reset_database(current_user):
     """Reset full database by dropping, rebuilding and importing data to tables"""
     drop_tables()
     rebuild_tables()
