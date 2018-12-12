@@ -1,6 +1,6 @@
 employee_id;contact_id;location_id;last_name;first_name;status;department;role;salary_huf
-1;2457;BUD005;Illés;Márton;Active;HR;Junior;300000
-2;6305;BUD003;Fehér;Kálmán;Active;Kitchen;Junior;300000
+1;2457;BUD005;Juhasz;Oliver;Active;HR;Junior;300000
+2;6305;BUD003;Hosman;Adam;Active;Kitchen;Junior;300000
 3;3376;BUD003;Takács;Mátyás;Active;Kitchen;Executive;2000000
 4;4363;BUD003;Virág;Alex;Active;Warehouse;Manager;1000000
 5;145;BUD003;Lengyel;Róbert;Active;Kitchen;Junior;300000
