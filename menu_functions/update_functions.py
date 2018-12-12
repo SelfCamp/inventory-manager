@@ -11,13 +11,13 @@ from menu_functions import read_queries as rq, update_queries as uq
 def set_stock_level_for_inventory_id(cursor):
     """Update stock level for a given inventory ID from user input"""
     inventory_id = input('\nPlease enter inventory ID: ')
-    cursor.execute(rq.read_stock_level_for_inventory_id, {'inventory_id': inventory_id})
+    cursor.execute(rq.read_stock_level_for_inventory_id, params={'inventory_id': inventory_id})
     result = cursor.fetchall()
     for loc, qty, exp, rack, shelf, name, unit in result:
         print(f'\nCurrent quantity of \'{name}\' at {loc} on rack {rack}, shelf {shelf} (expires on {exp}): {qty} {unit}')
     new_level = input('Please enter new quantity: ')
-    cursor.execute(uq.update_stock_level_for_inventory_id, {'new_level': new_level, 'inventory_id': inventory_id})
-    cursor.execute(rq.read_stock_level_for_inventory_id, {'inventory_id': inventory_id})
+    cursor.execute(uq.update_stock_level_for_inventory_id, params={'new_level': new_level, 'inventory_id': inventory_id})
+    cursor.execute(rq.read_stock_level_for_inventory_id, params={'inventory_id': inventory_id})
     result = cursor.fetchall()
     for loc, qty, exp, rack, shelf, name, unit in result:
         print(f'\nUpdated quantity of \'{name}\' at {loc} on rack {rack}, shelf {shelf} (expires on {exp}): {qty} {unit}')

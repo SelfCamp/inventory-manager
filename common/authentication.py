@@ -20,7 +20,7 @@ def authentication(cursor, max_attempts=999):
             quit()
         password = hash_sha256(input("Please enter your password\n"))
 
-        cursor.execute("SELECT password FROM users WHERE username = '%(username)s'" % {"username": user})
+        cursor.execute("SELECT password FROM users WHERE username = %(username)s", params={"username": user})
         try:
             password_in_db = cursor.fetchall()[0][0]
         except IndexError:

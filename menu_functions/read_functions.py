@@ -30,7 +30,7 @@ def get_available_suppliers(cursor):
 def get_stock_level_for_product_id(cursor):
     """Print stock level for a given product ID from user input"""
     product_id = input('\nPlease enter product ID: ')
-    cursor.execute(rq.read_stock_level_for_product_id, {'product_id': product_id})
+    cursor.execute(rq.read_stock_level_for_product_id, params={'product_id': product_id})
     result = cursor.fetchall()
     name = result[0][5]
     ui.print_title(f'Inventory of \'{name}\' across all locations (ordered by location, then expiration date):')
@@ -42,7 +42,7 @@ def get_stock_level_for_product_id(cursor):
 def get_po_status_for_po_id(cursor):
     """Print status of purchase order for a given PO ID from user input"""
     po_id = input('\nPlease enter PO ID: ')
-    cursor.execute(rq.read_po_status_for_po_id, {'po_id': po_id})
+    cursor.execute(rq.read_po_status_for_po_id, params={'po_id': po_id})
     ui.print_title(f'Status of purchase order #{po_id}:')
     result = cursor.fetchall()[0]
     print(f"Supplier:      {result['supplier']}\n"
@@ -73,5 +73,5 @@ def is_midrate_up_to_date(cursor):
 @cnx.connection_handler()
 def get_employee_data(cursor, username):
     """Get all user data except password for user from database. Return it as `list`"""
-    cursor.execute(rq.read_user_info, {"username": username})
+    cursor.execute(rq.read_user_info, params={"username": username})
     return cursor.fetchall()  # TODO: Error proofing, list flattening
