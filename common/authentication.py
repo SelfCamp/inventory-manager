@@ -15,12 +15,12 @@ def authentication(cursor, max_attempts=999):
         if num_of_attempts >= max_attempts:
             print("Too many failed login attempts")
             quit()
-        user = input("Please enter your username or X to quit\n")
-        if user.lower() == "x":
+        username = input("Please enter your username or X to quit\n")
+        if username.lower() == "x":
             quit()
         password = hash_sha256(input("Please enter your password\n"))
 
-        cursor.execute("SELECT password FROM users WHERE username = %(username)s", params={"username": user})
+        cursor.execute("SELECT password FROM users WHERE username = %(username)s", params={"username": username})
         try:
             password_in_db = cursor.fetchall()[0][0]
         except IndexError:
@@ -28,8 +28,8 @@ def authentication(cursor, max_attempts=999):
             num_of_attempts += 1
             continue
         if password_in_db == password:
-            print(f"Welcome, {user}!\n")
-            return True
+            print(f"Welcome, {username}!\n")
+            return username
         else:
             print("Invalid username / password")
             num_of_attempts += 1

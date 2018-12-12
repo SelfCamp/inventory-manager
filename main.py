@@ -1,13 +1,14 @@
 from common.authentication import authentication
 from menu_functions import admin_functions as af, read_functions as rf, update_functions as uf
+from classes.User import User
 
 
-def quit_application():
-    print('\nGoodbye!\n')
+def quit_application(current_user):
+    print(f'\nGoodbye {current_user.username}!\n')
     quit()
 
 
-def menu_handler():
+def menu_handler(current_user):
     MENU = [
         ('0: Reset database', af.reset_database),
         ('1: Check complete inventory', rf.get_inventory),
@@ -21,15 +22,16 @@ def menu_handler():
     for description, fn in MENU:
         print(description)
     choice = input('\nPlease type number of your choice: ')
-    MENU[int(choice)][1]()
+    MENU[int(choice)][1](current_user)
     input('\nPress [Enter] to return to MENU')
 
 
 def main():
-    authentication(2)  # try with user: jakobi1 - pass: abcd (jakobi - egy)
+    username = authentication(2)
+    current_user = User(username)
     uf.set_midrate()
     while True:
-        menu_handler()
+        menu_handler(current_user)
 
 
 if __name__ == '__main__':
