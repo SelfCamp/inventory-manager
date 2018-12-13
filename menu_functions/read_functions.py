@@ -43,14 +43,18 @@ def get_po_status_for_po_id(cursor, current_user):
     """Print status of purchase order for a given PO ID from user input"""
     po_id = input('\nPlease enter PO ID: ')
     cursor.execute(rq.read_po_status_for_po_id, params={'po_id': po_id})
-    ui.print_title(f'Status of purchase order #{po_id}:')
+    ui.print_title(f'Report on purchase order #{po_id}:')
     result = cursor.fetchall()[0]
-    print(f"Supplier:      {result['supplier']}\n"
-          f"Date ordered:  {result['date_ordered']}\n"
-          f"ETA:           {result['date_eta']}\n"
-          f"Date arrived:  {result['date_arrived']}\n"
-          f"Signee:        {result['signee']}\n"
-          f"Status:        {result['po_status']}")
+    report = [
+        {'title': 'Status', 'data': result['po_status'].upper()},
+        {'title': 'Supplier', 'data': result['supplier']},
+        {'title': 'Date ordered', 'data': result['date_ordered']},
+        {'title': 'ETA', 'data': result['date_eta']},
+        {'title': 'Date arrived', 'data': result['date_arrived']},
+        {'title': 'Signee', 'data': result['signee']}
+    ]
+    ui.print_titled_list(report, omit_empty=True)
+
 
 
 @cnx.connection_handler()

@@ -31,8 +31,8 @@ read_po_status_for_po_id = """
         CONCAT(first_name, ' ', last_name) AS signee,
         purchase_orders.status AS po_status
     FROM purchase_orders
-        JOIN suppliers ON purchase_orders.supplier_id = suppliers.supplier_id
-        JOIN employees ON purchase_orders.signee_id = employees.employee_id
+        LEFT JOIN suppliers ON purchase_orders.supplier_id = suppliers.supplier_id
+        LEFT JOIN employees ON purchase_orders.signee_id = employees.employee_id
     WHERE po_id = %(po_id)s
 """
 
