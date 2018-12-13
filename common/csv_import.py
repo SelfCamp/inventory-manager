@@ -17,7 +17,7 @@ def import_table_from_csv(cursor, file, database):
     for data in data_list:
         sql_query += "("
         for value in data:
-            if value.isnumeric():
+            if value.isnumeric() or value == 'NULL':
                 sql_query += f"{value}, "
             else:
                 sql_query += f"'{value}', "

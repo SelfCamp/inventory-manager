@@ -88,8 +88,8 @@ create_tables_multi = """
     
     CREATE TABLE purchase_orders (
     po_id           INT NOT NULL AUTO_INCREMENT,
-    supplier_id     INT NOT NULL,
-    date_ordered    DATETIME NOT NULL,
+    supplier_id     INT,
+    date_ordered    DATETIME,
     date_eta        DATETIME,
     date_arrived    DATETIME,
     signee_id       INT,                                        -- employee who received the shipment
