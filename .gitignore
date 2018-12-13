@@ -118,3 +118,8 @@ venv.bak/
 
 # virtualenv
 venv
+
+# mock files
+probaroka
+pizza.sql
+*.xlsx
