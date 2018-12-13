@@ -23,8 +23,8 @@ def get_connection(remote=True):
     """Return `MySQL connection object`, connecting to one of two MySQL servers
 
     Kwargs
-        - `remote=False`: run on server configured as `REMOTE`
-        - `remote=True`: run on server configured as `LOCAL`
+        - `remote=True`: run on server configured as `REMOTE`
+        - `remote=False`: run on server configured as `LOCAL`
     """
     if remote:
         return mysql.connector.connect(**REMOTE)
