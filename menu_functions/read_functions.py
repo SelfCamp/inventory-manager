@@ -3,6 +3,7 @@ import datetime as dt
 from common import cnx
 import ui
 from menu_functions import read_queries as rq
+from classes.Table import Table
 
 
 @cnx.connection_handler()
@@ -79,3 +80,9 @@ def get_employee_data(cursor, username):
     """Get all user data except password for user from database. Return it as `dictionary`"""
     cursor.execute(rq.read_user_info, params={"username": username})
     return cursor.fetchall()[0]  # TODO: Error proofing, list flattening
+
+def get_inventory_on_my_location(current_user):
+    """Get and print inventory data for current user's location. Return `none`"""
+    tab = Table(rq.read_inventory_on_my_location, {"location_id": current_user.location_id})
+    print(tab)
+

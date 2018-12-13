@@ -12,6 +12,7 @@ def menu_handler(current_user):
         {'description': 'Request supplier information',        'fn': rf.get_available_suppliers},
         {'description': 'Check status of purchase order',      'fn': rf.get_po_status_for_po_id},
         {'description': 'Update stock level for inventory ID', 'fn': uf.set_stock_level_for_inventory_id},
+        {'description': 'Show inventory on my location',       'fn': rf.get_inventory_on_my_location},
         {'description': 'Quit application',                    'fn': quit_application}
     ]
     print('\nMENU')

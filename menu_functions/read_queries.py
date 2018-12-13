@@ -53,3 +53,9 @@ JOIN employees ON users.employee_id = employees.employee_id
 JOIN contacts ON contacts.contact_id = employees.employee_id
 WHERE username = %(username)s
 """
+
+read_inventory_on_my_location = """SELECT products.name, quantity, shelf_no, rack_no, expiration_date FROM inventory
+JOIN products ON inventory.product_id = products.product_id
+WHERE location_id = %(location_id)s
+ORDER BY name
+"""
