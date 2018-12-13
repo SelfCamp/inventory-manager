@@ -134,6 +134,13 @@ create_tables_multi = """
     salary_huf      DECIMAL(10,2) NOT NULL,
     PRIMARY KEY (employee_id)
     );
+
+    CREATE TABLE shelves_by_location (
+    shelf_loc_id    INT NOT NULL AUTO_INCREMENT, 
+    location_id     CHAR(6) NOT NULL,
+    shelf_no        INT NOT NULL,
+    PRIMARY KEY (shelf_loc_id)
+    );
 """
     
 update_table_relations_multi = """
@@ -143,7 +150,6 @@ update_table_relations_multi = """
     ADD FOREIGN KEY (location_id) REFERENCES locations(location_id);
     ALTER TABLE inventory
     ADD FOREIGN KEY (po_id) REFERENCES purchase_orders(po_id);
-    
     
     ALTER TABLE locations
     ADD FOREIGN KEY (manager_id) REFERENCES employees(employee_id);
@@ -187,4 +193,7 @@ update_table_relations_multi = """
     ADD FOREIGN KEY (contact_id) REFERENCES contacts(contact_id);
     ALTER TABLE employees
     ADD FOREIGN KEY (location_id) REFERENCES locations(location_id);
+
+    ALTER TABLE shelves_by_location
+    ADD FOREIGN KEY (location_id) REFERENCES  locations(location_id);
 """
