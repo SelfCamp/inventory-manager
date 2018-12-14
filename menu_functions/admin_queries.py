@@ -1,13 +1,14 @@
 create_tables_multi = """
     CREATE TABLE inventory (
-    inventory_id    INT NOT NULL AUTO_INCREMENT,
-    product_id      INT NOT NULL,
-    quantity        INT NOT NULL,                               -- product table has info on units
-    location_id     CHAR(6) NOT NULL,
-    rack_no         INT NOT NULL,
-    shelf_no        INT NOT NULL,
-    expiration_date DATE NOT NULL,
-    po_id           INT NOT NULL,                               -- traces item back to order/supplier
+    inventory_id        INT NOT NULL AUTO_INCREMENT,
+    product_id          INT NOT NULL,
+    quantity            INT NOT NULL,                           -- product table has info on units
+    location_id         CHAR(6) NOT NULL,
+    rack_no             INT NOT NULL,
+    shelf_no            INT NOT NULL,
+    expiration_date     DATE NOT NULL,
+    po_id               INT NOT NULL,                           -- traces item back to order/supplier
+    location_shelf_gen  VARCHAR(12) AS (CONCAT(location_id, '-', shelf_no)) STORED ,
     PRIMARY KEY (inventory_id)
     );
     
@@ -136,9 +137,11 @@ create_tables_multi = """
     );
 
     CREATE TABLE shelves_by_location (
-    shelf_loc_id    INT NOT NULL AUTO_INCREMENT, 
-    location_id     CHAR(6) NOT NULL,
-    shelf_no        INT NOT NULL,
+    shelf_loc_id        INT NOT NULL AUTO_INCREMENT, 
+    location_id         CHAR(6) NOT NULL,
+    shelf_no            INT NOT NULL,
+    location_shelf_gen  VARCHAR(12) AS (CONCAT(location_id, '-', shelf_no)) STORED,
+    INDEX (location_shelf_gen),
     PRIMARY KEY (shelf_loc_id)
     );
 """
@@ -150,6 +153,8 @@ update_table_relations_multi = """
     ADD FOREIGN KEY (location_id) REFERENCES locations(location_id);
     ALTER TABLE inventory
     ADD FOREIGN KEY (po_id) REFERENCES purchase_orders(po_id);
+    ALTER TABLE inventory
+    ADD FOREIGN KEY (location_shelf_gen) REFERENCES shelves_by_location(location_shelf_gen);
     
     ALTER TABLE locations
     ADD FOREIGN KEY (manager_id) REFERENCES employees(employee_id);
