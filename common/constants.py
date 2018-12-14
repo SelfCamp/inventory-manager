@@ -11,7 +11,8 @@ STARTER_DATA_FILES = {
     "purchase_orders": r"starter_data/purchase_orders_table.csv",
     "purchase_order_contents": r"starter_data/purchase_order_contents_table.csv",
     "access_levels": r"starter_data/access_levels_table.csv",
-    "employees": r"starter_data/employees_table.csv"
+    "employees": r"starter_data/employees_table.csv",
+    "shelves_by_location": r"starter_data/shelves_by_location.csv"
 }
 
 
