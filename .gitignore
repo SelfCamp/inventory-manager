@@ -123,3 +123,5 @@ venv
 probaroka
 pizza.sql
 *.xlsx
+
+probaroka\.py
