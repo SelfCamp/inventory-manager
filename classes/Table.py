@@ -3,16 +3,9 @@ from common import cnx
 
 class Table:
 
-    def __init__(self, sql_read_statement, params):
-        self.headers, self.data = self._connection(sql_read_statement, params)
-        self.table = tuple([self.headers]) + tuple(self.data)
-
-    @staticmethod
-    @cnx.connection_handler()
-    def _connection(cursor, statement, params):
-        cursor.execute(statement, params)
-        data = cursor.fetchall()
-        return tuple(i[0] for i in cursor.description), data
+    def __init__(self, sql_read_statement, params=None):
+        self.headers, self.data = self._fetch_table_contents(sql_read_statement, params)
+        self.table = (self.headers, *self.data)
 
     def __repr__(self):
         column_lengths = [max([len(str(i[x])) for i in self.table]) for x in range(len(self.data[0]))]
@@ -34,6 +27,13 @@ class Table:
             full_text += "|\n"
         full_text += divider_text
         return full_text
+
+    @staticmethod
+    @cnx.connection_handler()
+    def _fetch_table_contents(cursor, statement, params=None):
+        cursor.execute(statement, params)
+        data = cursor.fetchall()
+        return tuple(i[0] for i in cursor.description), data
 
     def sort_by(self, column, asc=False):
         self.data = sorted(self.data, key=lambda x: x[column], reverse=asc)
