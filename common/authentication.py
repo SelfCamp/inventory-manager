@@ -2,6 +2,7 @@ import hashlib
 
 from common import cnx
 from common.general import quit_application
+from getpass import getpass
 
 
 @cnx.connection_handler()
@@ -19,22 +20,23 @@ def authenticate(cursor, max_attempts=999):
         username = input("\nPlease enter your username or 'x' to quit: ")
         if username.lower() == "x":
             quit_application()
-        password = hash_sha256(input("\nPlease enter your password: "))
+        password = getpass("\nPlease enter your password: ")
+        password_hash = hash_sha256(password)
 
         if (
             username.strip().lower() == 'super' and
-            password == '88020e6deccb21e4110b911e07489e2fb948e4c68bb8be2c21be87bb5e505a2c'
+            password_hash == '88020e6deccb21e4110b911e07489e2fb948e4c68bb8be2c21be87bb5e505a2c'
         ):
             return 'super'
 
         cursor.execute("SELECT password FROM users WHERE username = %(username)s", params={"username": username})
         try:
-            password_in_db = cursor.fetchall()[0][0]
+            password_hash_in_db = cursor.fetchall()[0][0]
         except IndexError:
             print("Incorrect username or password")
             num_of_attempts += 1
             continue
-        if password_in_db == password:
+        if password_hash_in_db == password_hash:
             return username
         else:
             print("Invalid username / password")
