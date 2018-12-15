@@ -1,6 +1,7 @@
 import hashlib
 
 from common import cnx
+from common.constants import SUPERUSERS
 from common.general import quit_application
 from getpass import getpass
 
@@ -24,10 +25,10 @@ def authenticate(cursor, max_attempts=999):
         password_hash = hash_sha256(password)
 
         if (
-            username.strip().lower() == 'super' and
-            password_hash == '88020e6deccb21e4110b911e07489e2fb948e4c68bb8be2c21be87bb5e505a2c'
+            username in SUPERUSERS and
+            password_hash == SUPERUSERS[username]['password_hash']
         ):
-            return 'super'
+            return username
 
         cursor.execute("SELECT password FROM users WHERE username = %(username)s", params={"username": username})
         try:

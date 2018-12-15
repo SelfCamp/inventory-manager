@@ -1,3 +1,6 @@
+from decimal import Decimal
+
+
 STARTER_DATA_FILES = {
     "inventory": r"starter_data/inventory_table.csv",
     "locations": r"starter_data/locations_table.csv",
@@ -20,3 +23,28 @@ CURRENCIES = [
     "AUD", "DKK", "JPY", "CAD", "NOK", "CHF", "SEK", "USD", "CZK",
     "PLN", "EUR", "HRK", "RON", "TRY", "BGN", "RSD", "GBP"
 ]
+
+
+SUPERUSERS = {
+
+    'super': {
+        'username': 'super',
+        'password_hash': '88020e6deccb21e4110b911e07489e2fb948e4c68bb8be2c21be87bb5e505a2c',
+        'access_level_id': 0,
+        'first_name': 'Super',
+        'last_name': 'User',
+        'location_id': 'BUD001',
+        'department': 'IT',
+        'role': 'God',
+        'locality': 'Budapest',
+        'phone_no': '(123) 456-7890',
+        'email': 'superuser@inv-mgr.com',
+        'address_line1': '1 Python street',
+        'address_line2': '99th floor',
+        'region': '',
+        'postcode': '0000',
+        'country': 'HU',
+        'salary_huf': Decimal(9999999)
+    }
+
+}
