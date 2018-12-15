@@ -1,14 +1,14 @@
-menu_item_id;name;description;price_huf;portions
-1;4 sajtos;Roquefort, mozzarella, füstöltsajt és parmezán kombinációja az igazán sajtos ízélményért!;1300.00;1
-2;Capricciosa;Articsóka és tükörtojás kéz a kézben, az ízélmény szolgálatában.;1000.00;1
-3;Capulet;Ha Júlia nem is jelent meg, egy kis pármai sonkával vigasztalhatod magad.;1500.00;1
-4;Forte;Magyaros pizza a csíp?s ízek kedvel?inek.;1700.00;1
-5;Hawaii;Az ananász szerelmeseinek.;800.00;1
-6;Medici;Ha valami különlegeset próbálnál ki, merülj el az aszalt paradicsom varázsában.;2300.00;1
-7;Olio e gambero;Egyenesen a tengerb?l, chilivel és rákkal!;1900.00;1
-8;Paradiso;Mozzarella, paradicsom és bazsalikom - ha nem vagy kísérletezget?s kedvedben;1800.00;1
-9;Parma;Pizza a pármai sonka esszenciájával.;2000.00;1
-10;Pollo;Amerikai pizza a bevállalósaknak.;700.00;1
-11;Prosciutto e funghi;Gombás pizza, akik az tenger helyett az erd?k gyümölcseit kedvelik.;900.00;1
-12;Pulcino;Amennyiben csak egy kis csirkére fáj a fogad.;1250.00;1
-13;Vivaldi;Hogy miért Vivaldi a neve, mi se tudjuk, talán te megmondod!;1600.00;1
+menu_item_id;name;description;price_huf
+1;4 sajtos;Roquefort, mozzarella, füstöltsajt és parmezán kombinációja az igazán sajtos ízélményért!;1300.00
+2;Capricciosa;Articsóka és tükörtojás kéz a kézben, az ízélmény szolgálatában.;1000.00
+3;Capulet;Ha Júlia nem is jelent meg, egy kis pármai sonkával vigasztalhatod magad.;1500.00
+4;Forte;Magyaros pizza a csíp?s ízek kedvel?inek.;1700.00
+5;Hawaii;Az ananász szerelmeseinek.;800.00
+6;Medici;Ha valami különlegeset próbálnál ki, merülj el az aszalt paradicsom varázsában.;2300.00
+7;Olio e gambero;Egyenesen a tengerb?l, chilivel és rákkal!;1900.00
+8;Paradiso;Mozzarella, paradicsom és bazsalikom - ha nem vagy kísérletezget?s kedvedben;1800.00
+9;Parma;Pizza a pármai sonka esszenciájával.;2000.00
+10;Pollo;Amerikai pizza a bevállalósaknak.;700.00
+11;Prosciutto e funghi;Gombás pizza, akik az tenger helyett az erd?k gyümölcseit kedvelik.;900.00
+12;Pulcino;Amennyiben csak egy kis csirkére fáj a fogad.;1250.00
+13;Vivaldi;Hogy miért Vivaldi a neve, mi se tudjuk, talán te megmondod!;1600.00
