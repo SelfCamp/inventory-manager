@@ -4,6 +4,7 @@ from common import cnx
 import ui
 from menu_functions import read_queries as rq
 from classes.Table import Table
+from time import sleep
 
 
 @cnx.connection_handler()
@@ -51,10 +52,10 @@ def get_po_status_for_po_id(cursor, current_user):
         {'title': 'Supplier', 'data': result['supplier']},
         {'title': 'Date ordered', 'data': result['date_ordered']},
         {'title': 'ETA', 'data': result['date_eta']},
-        {'title': 'Date arrived', 'data': result['date_arrived']},
-        {'title': 'Signee', 'data': result['signee']}
+        {'title': 'Date arrived', 'data': result['date_arrived'] or "Not arrived yet"},
+        {'title': 'Signee', 'data': result['signee'] or "Not signed yet"}
     ]
-    ui.print_titled_list(report, omit_empty=True)
+    ui.print_titled_list(report, omit_empty=False)
 
 
 
@@ -81,8 +82,37 @@ def get_employee_data(cursor, username):
     cursor.execute(rq.read_user_info, params={"username": username})
     return cursor.fetchall()[0]  # TODO: Error proofing, list flattening
 
-def get_inventory_on_my_location(current_user):
-    """Get and print inventory data for current user's location. Return `none`"""
-    tab = Table(rq.read_inventory_on_my_location, {"location_id": current_user.location_id})
-    print(tab)
 
+def get_inventory_on_location(current_user):
+    """Get and print inventory data for current user's location. Return `none`"""
+    table = Table(rq.read_inventory_on_location, {"location_id": current_user.location_id})
+    print(table)
+
+
+@cnx.connection_handler(dictionary=True)
+def get_inventory_for_menu_item_on_location(cursor, current_user):
+    menu_item_id = input('\nPlease enter menu item ID: ')
+    location_id = current_user.location_id
+
+    cursor.execute(
+        rq.read_max_portions_for_menu_item_on_location,
+        params={'location_id': location_id, 'menu_item_id': menu_item_id})
+    result = cursor.fetchall()
+    print(f"\n{location_id} has ingredients for "
+          f"{result[0]['can_make']} portions of \"{result[0]['menu_item_name']}\".")
+    sleep(2)
+
+    print(f"\nRelated inventory details, ordered by expiration date:")
+    sleep(1)
+    table = Table(
+        rq.read_inventory_for_menu_item_on_location,
+        params={"location_id": location_id, 'menu_item_id': menu_item_id})
+    print(table)
+    sleep(2)
+
+    print(f"\nRelated stock levels per product:")
+    sleep(1)
+    table = Table(
+        rq.read_max_portions_by_ingredient_for_menu_item_on_location,
+        params={"location_id": location_id, 'menu_item_id': menu_item_id})
+    print(table)

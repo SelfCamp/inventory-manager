@@ -45,17 +45,56 @@ read_stock_level_for_inventory_id = """
 """
 
 read_user_info = """
-SELECT username, access_levels.access_level_id AS access_level_id, first_name, last_name, location_id, department, role, locality,
-       phone_no, email, address_line1, address_line2, region, postcode, country, salary_huf
-FROM users
-JOIN access_levels ON users.access_level_id = access_levels.access_level_id
-JOIN employees ON users.employee_id = employees.employee_id
-JOIN contacts ON contacts.contact_id = employees.employee_id
-WHERE username = %(username)s
+    SELECT username, access_levels.access_level_id AS access_level_id, first_name, last_name, location_id, department, role, locality,
+           phone_no, email, address_line1, address_line2, region, postcode, country, salary_huf
+    FROM users
+    JOIN access_levels ON users.access_level_id = access_levels.access_level_id
+    JOIN employees ON users.employee_id = employees.employee_id
+    JOIN contacts ON contacts.contact_id = employees.employee_id
+    WHERE username = %(username)s
 """
 
-read_inventory_on_my_location = """SELECT products.name, quantity, shelf_no, rack_no, expiration_date FROM inventory
-JOIN products ON inventory.product_id = products.product_id
-WHERE location_id = %(location_id)s
-ORDER BY name
+read_inventory_on_location = """
+    SELECT products.name, quantity, shelf_no, rack_no, expiration_date FROM inventory
+    JOIN products ON inventory.product_id = products.product_id
+    WHERE location_id = %(location_id)s
+    ORDER BY name
+"""
+
+read_inventory_for_menu_item_on_location = """
+    SELECT
+        menu_items.name AS 'menu_item_name',
+        products.name AS 'product_name',
+        proportions.amount AS 'needed_per_portion',
+        inventory.quantity AS 'available',
+        products.unit,
+        inventory.rack_no,
+        inventory.shelf_no,
+        expiration_date
+    FROM menu_items
+        JOIN proportions ON menu_items.menu_item_id = proportions.menu_item_id
+		JOIN products ON proportions.ingredient_id = products.product_id
+		JOIN inventory ON products.product_id = inventory.product_id
+    WHERE location_id = %(location_id)s AND menu_items.menu_item_id = %(menu_item_id)s
+    ORDER BY products.name, expiration_date
+"""
+
+read_max_portions_by_ingredient_for_menu_item_on_location = f"""
+    SELECT
+        menu_item_name,
+        product_name,
+        CONCAT(SUM(available), ' ', unit) AS amount,
+        FLOOR(SUM(available/needed_per_portion)) AS portions
+    FROM ({read_inventory_for_menu_item_on_location})
+        AS read_inventory_for_menu_item_on_location
+    GROUP BY product_name, unit
+"""
+
+read_max_portions_for_menu_item_on_location = f"""
+    SELECT
+        menu_item_name,
+        MIN(portions) AS can_make
+    FROM ({read_max_portions_by_ingredient_for_menu_item_on_location})
+        AS read_max_portions_by_ingredient_for_menu_item_on_location
+    GROUP BY menu_item_name
 """
