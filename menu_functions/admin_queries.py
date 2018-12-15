@@ -43,7 +43,6 @@ create_tables_multi = """
     name            VARCHAR(50) NOT NULL,
     description     VARCHAR(500) NOT NULL,                      -- to be displayed on the menu
     price_huf       DECIMAL(6,2) NOT NULL,
-    portions        INT NOT NULL,                               -- how many portions to make by default (e.g. pizza is 1, but soup may be 30)
     PRIMARY KEY (menu_item_id)
     );
     
