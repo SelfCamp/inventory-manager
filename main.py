@@ -29,7 +29,7 @@ def main():
     username = authenticate(max_attempts=2) or quit_application()
     current_user = User(username)
     print(f"\nWelcome, {current_user.first_name}!"); sleep(1)
-    uf.set_midrate()
+    rf.is_midrate_up_to_date() or uf.set_midrate()
     while True:
         menu_handler(current_user)
 

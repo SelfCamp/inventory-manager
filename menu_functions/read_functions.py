@@ -67,12 +67,16 @@ def is_midrate_up_to_date(cursor):
         True: If the date in midrate table is TODAY
         False: If the date in the midrate table is YESTERDAY
     """
+    print('\nChecking if foreign currency mid-rates are up to date...', end='')
     cursor.execute("SELECT date_updated FROM mid_exchange_rate LIMIT 1")
     try:
         if cursor.fetchall()[0][0] == dt.date.today():
+            print(' OK')
             return True
+        print(' NO')
         return False
     except IndexError:
+        print(' NO')
         return False
 
 

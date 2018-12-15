@@ -25,12 +25,8 @@ def set_stock_level_for_inventory_id(cursor, current_user):
 
 @cnx.connection_handler()
 def set_midrate(cursor):
-    """Check if midrate table is up to date, if not, update table from napiarfolyam.hu"""
-
-    if is_midrate_up_to_date():
-        print("Foreign currency mid-rates are up to date!")
-        return None
-
+    """Update midrate table from napiarfolyam.hu"""
+    print("Updating foreign currency mid-rates...", end='')
     response = requests.get("http://api.napiarfolyam.hu/?bank=mnb")
     root = ET.fromstring(response.text)
 
@@ -44,3 +40,4 @@ def set_midrate(cursor):
         to_sql += f" ('{elem[0]}','{dt.date.today()}','{elem[1]}'),"
     to_sql = to_sql[:-1]
     cursor.execute(to_sql)
+    print(' DONE')
