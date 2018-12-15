@@ -1,5 +1,6 @@
 from menu_functions import read_functions as rf
 
+
 class User:
 
     def __init__(self, username):
@@ -20,7 +21,6 @@ class User:
         self.postcode = user_data["postcode"]
         self.country = user_data["country"]
         self.salary_huf = user_data["salary_huf"]
-
 
     def __repr__(self):
         return f"Name: {self.last_name}, {self.first_name} \nLocation ID: {self.location_id} \n" \
