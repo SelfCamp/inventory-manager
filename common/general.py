@@ -1,3 +1,6 @@
+from time import sleep
+
+
 def break_up_query(multi_query):
     """Return list of individual SQL statements in `multi_query`
 
@@ -10,7 +13,8 @@ def break_up_query(multi_query):
 
 def quit_application(current_user=None):
     if not current_user:
-        print(f'\nGoodbye!\n')
+        print(f'\nGoodbye!')
     else:
-        print(f'\nGoodbye, {current_user.username}!\n')
+        print(f'\nGoodbye, {current_user.first_name}!')
+    sleep(1)
     quit()

@@ -16,10 +16,10 @@ def authenticate(cursor, max_attempts=999):
         if num_of_attempts >= max_attempts:
             print("Too many failed login attempts")
             return None
-        username = input("Please enter your username or X to quit\n")
+        username = input("\nPlease enter your username or 'x' to quit: ")
         if username.lower() == "x":
             quit_application()
-        password = hash_sha256(input("Please enter your password\n"))
+        password = hash_sha256(input("\nPlease enter your password: "))
 
         cursor.execute("SELECT password FROM users WHERE username = %(username)s", params={"username": username})
         try:
@@ -29,7 +29,6 @@ def authenticate(cursor, max_attempts=999):
             num_of_attempts += 1
             continue
         if password_in_db == password:
-            print(f"Welcome, {username}!\n")
             return username
         else:
             print("Invalid username / password")
