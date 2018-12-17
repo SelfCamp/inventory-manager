@@ -4,40 +4,30 @@ from common import cnx
 import ui
 from menu_functions import read_queries as rq
 from classes.Table import Table
-from time import sleep
 
 
-@cnx.connection_handler()
-def get_inventory(cursor, current_user):
-    """Fancy-print complete inventory across all locations"""
-    cursor.execute(rq.read_inventory)
-    result = cursor.fetchall()
-    ui.print_title('Complete inventory across all locations (ordered by item name, location, then expiration date):')
-    for loc, qty, exp, rack, shelf, name, unit in result:
-        print(f'{name}: {qty} {unit} at {loc} on rack {rack}, shelf {shelf} (expires on {exp})')
+def get_global_inventory(current_user):
+    table = Table(rq.read_global_inventory)
+    print(table)
 
 
-@cnx.connection_handler()
-def get_available_suppliers(cursor, current_user):
+def get_local_inventory(current_user):
+    location_id = current_user.location_id
+    table = Table(rq.read_local_inventory, params={'location_id': location_id})
+    print(table)
+
+
+def get_available_suppliers(current_user):
     """Print list of suppliers with corresponding products and contact details, return `None`"""
-    cursor.execute(rq.read_available_suppliers)
-    records = list(dict(zip(cursor.column_names, fetch)) for fetch in cursor.fetchall())
-    ui.print_title(f'List of suppliers with corresponding products and contact details:')
-    for record in records:
-        print(record)
-    # TODO: Pretty printing
+    table = Table(rq.read_available_suppliers)
+    print(table)
 
 
-@cnx.connection_handler()
-def get_stock_level_for_product_id(cursor, current_user):
+def get_global_stock_level_for_product_id(current_user):
     """Print stock level for a given product ID from user input"""
     product_id = input('\nPlease enter product ID: ')
-    cursor.execute(rq.read_stock_level_for_product_id, params={'product_id': product_id})
-    result = cursor.fetchall()
-    name = result[0][5]
-    ui.print_title(f'Inventory of \'{name}\' across all locations (ordered by location, then expiration date):')
-    for loc, qty, exp, rack, shelf, name, unit in result:
-        print(f'{qty} {unit} at {loc} on rack {rack}, shelf {shelf} (expires on {exp})')
+    table = Table(rq.read_global_stock_level_for_product_id, params={'product_id': product_id})
+    print(table)
 
 
 @cnx.connection_handler(dictionary=True)
@@ -82,41 +72,42 @@ def is_midrate_up_to_date(cursor):
 
 @cnx.connection_handler(dictionary=True)
 def get_employee_data(cursor, username):
-    """Get all user data except password for user from database. Return it as `dictionary`"""
+    """Get all user data except password for user from database, return it as `dict`"""
     cursor.execute(rq.read_user_info, params={"username": username})
     return cursor.fetchall()[0]  # TODO: Error proofing, list flattening
 
 
-def get_inventory_on_location(current_user):
-    """Get and print inventory data for current user's location. Return `none`"""
-    table = Table(rq.read_inventory_on_location, {"location_id": current_user.location_id})
-    print(table)
-
-
 @cnx.connection_handler(dictionary=True)
-def get_inventory_for_menu_item_on_location(cursor, current_user):
-    menu_item_id = input('\nPlease enter menu item ID: ')
+def get_max_portions_for_menu_item_on_location(cursor, current_user, menu_item_id=None):
+    menu_item_id = menu_item_id or input('\nPlease enter menu item ID: ')
     location_id = current_user.location_id
 
     cursor.execute(
-        rq.read_max_portions_for_menu_item_on_location,
-        params={'location_id': location_id, 'menu_item_id': menu_item_id})
+        rq.read_local_max_portions_for_menu_item,
+        params={'location_id': location_id, 'menu_item_id': menu_item_id}
+    )
     result = cursor.fetchall()
-    print(f"\n{location_id} has ingredients for "
-          f"{result[0]['can_make']} portions of \"{result[0]['menu_item_name']}\".")
-    sleep(2)
+    max_portions = result[0]['can_make']
+    menu_item_name = result[0]['menu_item_name']
+    print(f"\n{location_id} has ingredients for {max_portions} portions of \"{menu_item_name}\".")
+    return max_portions, menu_item_name
 
-    print(f"\nRelated inventory details, ordered by expiration date:")
-    sleep(1)
+
+def get_ingredient_levels_for_menu_item_on_location(current_user):
+    menu_item_id = input('\nPlease enter menu item ID: ')
+    location_id = current_user.location_id
+
     table = Table(
-        rq.read_inventory_for_menu_item_on_location,
+        rq.read_local_max_portions_by_ingredient_for_menu_item,
         params={"location_id": location_id, 'menu_item_id': menu_item_id})
     print(table)
-    sleep(2)
 
-    print(f"\nRelated stock levels per product:")
-    sleep(1)
+
+def get_inventory_for_menu_item_on_location(current_user):
+    menu_item_id = input('\nPlease enter menu item ID: ')
+    location_id = current_user.location_id
+
     table = Table(
-        rq.read_max_portions_by_ingredient_for_menu_item_on_location,
+        rq.read_local_inventory_for_menu_item,
         params={"location_id": location_id, 'menu_item_id': menu_item_id})
     print(table)

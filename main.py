@@ -7,15 +7,18 @@ from time import sleep
 
 def menu_handler(current_user):
     MENU = [
-        {'description': 'Reset database',                           'fn': af.reset_database},
-        {'description': 'Check complete inventory',                 'fn': rf.get_inventory},
-        {'description': 'Check stock level for product ID',         'fn': rf.get_stock_level_for_product_id},
-        {'description': 'Request supplier information',             'fn': rf.get_available_suppliers},
-        {'description': 'Check status of purchase order',           'fn': rf.get_po_status_for_po_id},
-        {'description': 'Update stock level for inventory ID',      'fn': uf.set_stock_level_for_inventory_id},
-        {'description': 'Show inventory on location',               'fn': rf.get_inventory_on_location},
-        {'description': 'Show inventory for menu item on location', 'fn': rf.get_inventory_for_menu_item_on_location},
-        {'description': 'Quit application',                         'fn': quit_application}
+        {'description': 'Reset database',                                    'fn': af.reset_database},
+        {'description': 'Check global inventory',                            'fn': rf.get_global_inventory},
+        {'description': 'Check local inventory',                             'fn': rf.get_local_inventory},
+        {'description': 'Check global stock level for product ID',           'fn': rf.get_global_stock_level_for_product_id},
+        {'description': 'Request supplier information',                      'fn': rf.get_available_suppliers},
+        {'description': 'Check status of purchase order',                    'fn': rf.get_po_status_for_po_id},
+        {'description': 'Update stock level for inventory ID',               'fn': uf.set_stock_level_for_inventory_id},
+        {'description': 'Show max. portions for menu item on location',      'fn': rf.get_max_portions_for_menu_item_on_location},
+        {'description': 'Show ingredient levels for menu item on location',  'fn': rf.get_ingredient_levels_for_menu_item_on_location},
+        {'description': 'Show detailed inventory for menu item on location', 'fn': rf.get_inventory_for_menu_item_on_location},
+        # {'description': 'Remove inventory for menu item on location',        'fn': uf.remove_inventory_for_menu_item_on_location},
+        {'description': 'Quit application',                                  'fn': quit_application}
     ]
     print('\nMENU')
     for num, item in enumerate(MENU):
