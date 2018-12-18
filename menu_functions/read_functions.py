@@ -90,7 +90,7 @@ def get_max_portions_for_menu_item_on_location(cursor, current_user, menu_item_i
     max_portions = result[0]['can_make']
     menu_item_name = result[0]['menu_item_name']
     print(f"\n{location_id} has ingredients for {max_portions} portions of \"{menu_item_name}\".")
-    return max_portions, menu_item_name
+    return max_portions
 
 
 def get_ingredient_levels_for_menu_item_on_location(current_user):

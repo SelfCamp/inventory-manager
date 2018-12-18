@@ -1,10 +1,11 @@
-from xml.etree import ElementTree as ET
 import datetime as dt
+from xml.etree import ElementTree as ET
+
 import requests
 
+from classes.Table import Table
 from common import cnx
 from menu_functions import read_queries as rq, read_functions as rf, update_queries as uq
-from classes.Table import Table
 
 
 @cnx.connection_handler()
@@ -42,18 +43,70 @@ def set_midrate(cursor):
     print(' DONE')
 
 
-# TODO ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
-
-@cnx.connection_handler()
+@cnx.connection_handler(dictionary=True)
 def remove_inventory_for_menu_item_on_location(cursor, current_user):
+    # get user request and see if it's doable
     menu_item_id = input('\nPlease enter menu item ID: ')
     location_id = current_user.location_id
-    max_portions, menu_item_name = rf.get_max_portions_for_menu_item_on_location(current_user, menu_item_id)
-    portions = int(input(f'\nPlease enter number of portions to remove: '))
-    while portions > max_portions:
-        portions = int(input(f'\nAmount exceeds stock level, please enter smaller number: '))
+    max_portions = rf.get_max_portions_for_menu_item_on_location(current_user, menu_item_id)
+    portions_to_remove = int(input(f'Please enter number of portions to remove: '))
+    while portions_to_remove > max_portions:
+        portions_to_remove = int(input(f'Amount exceeds stock level, please enter smaller number: '))
+
+    # get all inventory data required for calculations
+    cursor.execute(
+        rq.read_local_inventory_for_menu_item,
+        params={"location_id": location_id, 'menu_item_id': menu_item_id}
+    )
+    inventory_extract = cursor.fetchall()
+
+    # calculate quantities to remove for each product_id
+    products_to_remove = {
+        row['product_id']: (portions_to_remove * row['needed_per_portion'])
+        for row in inventory_extract
+    }
+
+    # TODO: display planned changes to user, have them approved, or rollback connection
+
+    menu_item_name = inventory_extract[0]['menu_item_name']
+    print(f"Removing inventory for {portions_to_remove} portions of \"{menu_item_name}\"...", end='')
+    for product_id, total_to_remove in products_to_remove.items():
+        remove_fifo(cursor, current_user, product_id, total_to_remove, check_if_possible=False)
+    print(' DONE')
 
 
+@cnx.connection_handler(dictionary=True)
+def remove_fifo(cursor, current_user, product_id, total_to_remove, check_if_possible=False):
+    """Remove local inventory for product_id, oldest items first (as in FIFO)"""
+    cursor.execute(
+        rq.read_local_inventory_for_product_id,
+        params={'location_id': current_user.location_id, 'product_id': product_id}
+    )
 
+    before = cursor.fetchall()
+    before = [row for row in before if row['quantity'] != 0]  # TODO: do in query instead
+    before.sort(key=lambda row: row['expiration_date'])       # TODO: do in query instead
 
-    print('DONE')
+    inventory_to_update = {}
+    for row in before:
+        inventory_id = row['inventory_id']
+        old_quantity = row['quantity']
+        if old_quantity >= total_to_remove:
+            new_quantity = old_quantity - total_to_remove
+            total_to_remove = 0
+            inventory_to_update.update({inventory_id: new_quantity})
+            break
+        else:
+            new_quantity = 0
+            total_to_remove -= old_quantity
+            inventory_to_update.update({inventory_id: new_quantity})
+
+    update_statements = []
+    for inventory_id, new_quantity in inventory_to_update.items():
+        update_statements.append(f"""
+            UPDATE inventory SET quantity = {new_quantity}
+            WHERE inventory_id = {inventory_id}
+        """)
+
+    for statement in update_statements:
+        cursor.execute(statement)

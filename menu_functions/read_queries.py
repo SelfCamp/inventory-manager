@@ -60,13 +60,15 @@ read_global_inventory_for_inventory_id = f"""
 read_local_inventory_for_menu_item = """
     SELECT
         menu_items.name AS 'menu_item_name',
+        products.product_id,
         products.name AS 'product_name',
         proportions.amount AS 'needed_per_portion',
+        inventory.inventory_id,
         inventory.quantity AS 'available',
         products.unit,
         inventory.rack_no,
         inventory.shelf_no,
-        expiration_date
+        inventory.expiration_date
     FROM menu_items
         JOIN proportions ON menu_items.menu_item_id = proportions.menu_item_id
 		JOIN products ON proportions.ingredient_id = products.product_id
@@ -127,3 +129,5 @@ read_user_info = """
     JOIN contacts ON contacts.contact_id = employees.employee_id
     WHERE username = %(username)s
 """
+
+pass

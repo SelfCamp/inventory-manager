@@ -17,7 +17,7 @@ def menu_handler(current_user):
         {'description': 'Show max. portions for menu item on location',      'fn': rf.get_max_portions_for_menu_item_on_location},
         {'description': 'Show ingredient levels for menu item on location',  'fn': rf.get_ingredient_levels_for_menu_item_on_location},
         {'description': 'Show detailed inventory for menu item on location', 'fn': rf.get_inventory_for_menu_item_on_location},
-        # {'description': 'Remove inventory for menu item on location',        'fn': uf.remove_inventory_for_menu_item_on_location},
+        {'description': 'Remove inventory for menu item on location',        'fn': uf.remove_inventory_for_menu_item_on_location},
         {'description': 'Quit application',                                  'fn': quit_application}
     ]
     print('\nMENU')
