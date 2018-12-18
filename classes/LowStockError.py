@@ -1,0 +1,2 @@
+class LowStockError(Exception):
+    pass

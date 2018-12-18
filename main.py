@@ -13,11 +13,12 @@ def menu_handler(current_user):
         {'description': 'Check global stock level for product ID',           'fn': rf.get_global_stock_level_for_product_id},
         {'description': 'Request supplier information',                      'fn': rf.get_available_suppliers},
         {'description': 'Check status of purchase order',                    'fn': rf.get_po_status_for_po_id},
-        {'description': 'Update stock level for inventory ID',               'fn': uf.set_stock_level_for_inventory_id},
         {'description': 'Show max. portions for menu item on location',      'fn': rf.get_max_portions_for_menu_item_on_location},
         {'description': 'Show ingredient levels for menu item on location',  'fn': rf.get_ingredient_levels_for_menu_item_on_location},
         {'description': 'Show detailed inventory for menu item on location', 'fn': rf.get_inventory_for_menu_item_on_location},
-        {'description': 'Remove inventory for menu item on location',        'fn': uf.remove_inventory_for_menu_item_on_location},
+        {'description': 'Update stock level for inventory ID',               'fn': uf.set_stock_level_for_inventory_id},
+        {'description': 'FIFO remove menu item ingredients from inventory',  'fn': uf.fifo_remove_products_for_menu_item},
+        {'description': 'FIFO remove product from inventory',                'fn': uf.fifo_remove_product_ui_layer},
         {'description': 'Quit application',                                  'fn': quit_application}
     ]
     print('\nMENU')
