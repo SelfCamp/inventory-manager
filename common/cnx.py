@@ -19,7 +19,7 @@ REMOTE = {
 }
 
 
-def get_connection(remote=True):
+def get_connection(remote=False):
     """Return `MySQL connection object`, connecting to one of two MySQL servers
 
     Kwargs
@@ -41,7 +41,7 @@ def connection_handler(dictionary=False):
     def inner(fn):
         @wraps(fn)
         def wrapper(*args, **kwargs):
-            if any(type(arg) == mysql.connector.cursor.MySQLCursor for arg in args):
+            if any('MySQLCursor' in str(type(arg)) for arg in args):
                 return fn(*args, **kwargs)
             else:
                 connection = get_connection()
