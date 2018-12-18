@@ -33,7 +33,7 @@ def get_connection(remote=True):
 
 
 def connection_handler(dictionary=False):
-    """Set up database connection & cursor, call `fn` with cursor, commit & close connection, return `fn` result
+    """Open & close database connection for decorated function, unless caller has passed one already
 
     Kwargs
         - `dictionary=True` (optional): make dictionary cursor instead of default list cursor
@@ -41,13 +41,16 @@ def connection_handler(dictionary=False):
     def inner(fn):
         @wraps(fn)
         def wrapper(*args, **kwargs):
-            connection = get_connection()
-            connection.autocommit = False
-            cursor = connection.cursor(dictionary=dictionary)
-            result = fn(cursor, *args, **kwargs)
-            connection.commit()
-            cursor.close()
-            connection.close()
-            return result
+            if any(type(arg) == mysql.connector.cursor.MySQLCursor for arg in args):
+                return fn(*args, **kwargs)
+            else:
+                connection = get_connection()
+                connection.autocommit = False
+                cursor = connection.cursor(dictionary=dictionary)
+                result = fn(cursor, *args, **kwargs)
+                connection.commit()
+                cursor.close()
+                connection.close()
+                return result
         return wrapper
     return inner
