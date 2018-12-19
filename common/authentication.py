@@ -7,7 +7,7 @@ from getpass import getpass
 
 
 @cnx.connection_handler()
-def authenticate(cursor, max_attempts=999):
+def authenticate(connection, cursor, max_attempts=999):
     """Authenticate user, return `username` if authentication is successful, else `None`
 
     Args

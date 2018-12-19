@@ -30,7 +30,7 @@ class Table:
 
     @staticmethod
     @cnx.connection_handler()
-    def _fetch_table_contents(cursor, statement, params=None):
+    def _fetch_table_contents(connection, cursor, statement, params=None):
         cursor.execute(statement, params)
         data = cursor.fetchall()
         return tuple(i[0] for i in cursor.description), data

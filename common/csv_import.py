@@ -4,7 +4,7 @@ from common import cnx
 
 
 @cnx.connection_handler()
-def import_table_from_csv(cursor, file, database):
+def import_table_from_csv(connection, cursor, file, database):
     with open(file, encoding="utf8") as f:
         headers_list = str(*itertools.islice(f, 1)).strip().split(";")
         data_list = list(line.strip().split(";") for line in f)

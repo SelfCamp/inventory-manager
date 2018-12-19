@@ -31,7 +31,7 @@ def get_global_stock_level_for_product_id(current_user):
 
 
 @cnx.connection_handler(dictionary=True)
-def get_po_status_for_po_id(cursor, current_user):
+def get_po_status_for_po_id(connection, cursor, current_user):
     """Print status of purchase order for a given PO ID from user input"""
     po_id = input('\nPlease enter PO ID: ')
     cursor.execute(rq.read_po_status_for_po_id, params={'po_id': po_id})
@@ -50,7 +50,7 @@ def get_po_status_for_po_id(cursor, current_user):
 
 
 @cnx.connection_handler()
-def is_midrate_up_to_date(cursor):
+def is_midrate_up_to_date(connection, cursor):
     """Check whether the dating in midrate table is today or not
 
     Returns
@@ -71,14 +71,14 @@ def is_midrate_up_to_date(cursor):
 
 
 @cnx.connection_handler(dictionary=True)
-def get_employee_data(cursor, username):
+def get_employee_data(connection, cursor, username):
     """Get all user data except password for user from database, return it as `dict`"""
     cursor.execute(rq.read_user_info, params={"username": username})
     return cursor.fetchall()[0]  # TODO: Error proofing, list flattening
 
 
 @cnx.connection_handler(dictionary=True)
-def get_max_portions_for_menu_item_on_location(cursor, current_user, menu_item_id=None):
+def get_max_portions_for_menu_item_on_location(connection, cursor, current_user, menu_item_id=None):
     menu_item_id = menu_item_id or input('\nPlease enter menu item ID: ')
     location_id = current_user.location_id
 

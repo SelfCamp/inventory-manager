@@ -8,13 +8,13 @@ from menu_functions.update_functions import set_midrate
 
 
 @cnx.connection_handler()
-def fetch_table(cursor, table):
+def fetch_table(connection, cursor, table):
     cursor.execute(f"SELECT * FROM {table}")
     return cursor.fetchall()
 
 
 @cnx.connection_handler()
-def sql_execute(cursor, statement):
+def sql_execute(connection, cursor, statement):
     cursor.execute(statement)
 
 

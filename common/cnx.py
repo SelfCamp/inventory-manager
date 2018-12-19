@@ -47,7 +47,7 @@ def connection_handler(dictionary=False):
                 connection = get_connection()
                 connection.autocommit = False
                 cursor = connection.cursor(dictionary=dictionary)
-                result = fn(cursor, *args, **kwargs)
+                result = fn(connection, cursor, *args, **kwargs)
                 connection.commit()
                 cursor.close()
                 connection.close()

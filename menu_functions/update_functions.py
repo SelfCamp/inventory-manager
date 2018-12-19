@@ -10,7 +10,7 @@ from menu_functions import read_queries as rq, read_functions as rf, update_quer
 
 
 @cnx.connection_handler()
-def set_stock_level_for_inventory_id(cursor, current_user):
+def set_stock_level_for_inventory_id(connection, cursor, current_user):
     """Update stock level for a given inventory ID from user input"""
     inventory_id = input('\nPlease enter inventory ID: ')
 
@@ -28,7 +28,7 @@ def set_stock_level_for_inventory_id(cursor, current_user):
 
 
 @cnx.connection_handler()
-def set_midrate(cursor):
+def set_midrate(connection, cursor):
     """Update midrate table from napiarfolyam.hu"""
     print("Updating foreign currency mid-rates...", end='')
     response = requests.get("http://api.napiarfolyam.hu/?bank=mnb")
@@ -48,7 +48,7 @@ def set_midrate(cursor):
 
 
 @cnx.connection_handler(dictionary=True)
-def fifo_remove_products_for_menu_item(cursor, current_user):
+def fifo_remove_products_for_menu_item(connection, cursor, current_user):
     """Remove local inventory for all ingredients of menu item, oldest items first (as in FIFO)"""
     menu_item_id = int(input('\nPlease enter menu item ID: '))
     location_id = current_user.location_id
@@ -71,16 +71,15 @@ def fifo_remove_products_for_menu_item(cursor, current_user):
     }
 
     # TODO: display planned changes to user, have them approved, or rollback connection
-
     menu_item_name = starting_inventory[0]['menu_item_name']
     print(f"Removing inventory for {portions_to_remove} portions of \"{menu_item_name}\"...", end='')
     for product_id, total_to_remove in products_to_remove.items():
-        fifo_remove_product(cursor, location_id, product_id, total_to_remove, check_if_possible=False)
+        fifo_remove_product(connection, cursor, location_id, product_id, total_to_remove, check_if_possible=False)
     print(' DONE')
 
 
 @cnx.connection_handler(dictionary=True)
-def fifo_remove_product_ui_layer(cursor, current_user):
+def fifo_remove_product_ui_layer(connection, cursor, current_user):
     location_id = current_user.location_id
     product_id = int(input('\nPlease enter product ID: '))
     total_to_remove = int(input(f'\nPlease enter amount to remove: '))
@@ -88,12 +87,12 @@ def fifo_remove_product_ui_layer(cursor, current_user):
     result = 'TBD'
     while result == 'TBD':
         try:
-            result = fifo_remove_product(cursor, location_id, product_id, total_to_remove, check_if_possible=True)
+            result = fifo_remove_product(connection, cursor, location_id, product_id, total_to_remove, check_if_possible=True)
         except LowStockError:
             total_to_remove = int(input(f'Amount exceeds stock level, please enter smaller number: '))
 
 
-def fifo_remove_product(cursor, location_id, product_id, total_to_remove, check_if_possible=True):
+def fifo_remove_product(connection, cursor, location_id, product_id, total_to_remove, check_if_possible=True):
     """Remove local inventory for product_id, oldest items first (as in FIFO)"""
     cursor.execute(
         rq.read_local_inventory_for_product_id,

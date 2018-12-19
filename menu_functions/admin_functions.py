@@ -4,14 +4,14 @@ from menu_functions import admin_queries as aq
 
 
 @cnx.connection_handler()
-def list_all_tables(cursor):
+def list_all_tables(connection, cursor):
     """Return currently active databases as `list`"""
     cursor.execute("SHOW TABLES")
     return list(table[0] for table in cursor.fetchall())
 
 
 @cnx.connection_handler()
-def drop_tables(cursor):
+def drop_tables(connection, cursor):
     """Delete all active tables, return `None`"""
     print("Dropping tables...", end='')
     tables = list_all_tables()
@@ -23,7 +23,7 @@ def drop_tables(cursor):
 
 
 @cnx.connection_handler()
-def rebuild_tables(cursor):
+def rebuild_tables(connection, cursor):
     """Rebuild all tables from original schema, return `None`"""
     print("Rebuilding tables...", end='')
     for statement in general.break_up_query(aq.create_tables_multi):
