@@ -21,8 +21,7 @@ def authenticate(connection, cursor, max_attempts=999):
         username = input("\nPlease enter your username or 'x' to quit: ")
         if username.lower() == "x":
             quit_application()
-        password = getpass("\nPlease enter your password: ")
-        password_hash = hash_sha256(password)
+        password_hash = hash_sha256(getpass("\nPlease enter your password: "))
 
         if (
             username in SUPERUSERS and
