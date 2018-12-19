@@ -1,4 +1,5 @@
 from time import sleep
+import sys
 
 
 def break_up_query(multi_query):
@@ -17,4 +18,4 @@ def quit_application(current_user=None):
     else:
         print(f'\nGoodbye, {current_user.first_name}!')
     sleep(1)
-    quit()
+    sys.exit(0)
