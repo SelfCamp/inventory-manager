@@ -51,9 +51,9 @@ Welcome to SelfCamp's very first project!
 
 #### Setup
 - **Install environment & dependencies**
-  - $ virtualenv venv
-  - $ source venv/bin/activate
-  - $ venv/bin/pip install -r requirements.txt
+  - `$ virtualenv venv`
+  - `$ source venv/bin/activate`
+  - `$ venv/bin/pip install -r requirements.txt`
 - **Set environment variables for database access**
   - local_host
   - local_database
