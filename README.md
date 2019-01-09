@@ -50,6 +50,10 @@ Welcome to SelfCamp's very first project!
 - We use parameterized queries instead of concatenation wherever possible
 
 #### Setup
+- **Install environment & dependencies**
+  - $ virtualenv venv
+  - $ source venv/bin/activate
+  - $ venv/bin/pip install -r requirements.txt
 - **Set environment variables for database access**
   - local_host
   - local_database
@@ -59,8 +63,6 @@ Welcome to SelfCamp's very first project!
   - remote_database
   - remote_user
   - remote_password
-- **Install dependencies**
-  - mysql-connector-python-rf==2.2.2
 
 #### Version history
 
